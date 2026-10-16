@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent {
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   email = '';
   password = '';
@@ -55,9 +57,7 @@ export class LoginComponent {
 
   private getLoginErrorMessage(error: unknown): string {
     const responseBody =
-      typeof error === 'object' && error !== null && 'error' in error
-        ? error.error
-        : error;
+      typeof error === 'object' && error !== null && 'error' in error ? error.error : error;
 
     if (
       typeof responseBody === 'object' &&
@@ -70,5 +70,9 @@ export class LoginComponent {
     }
 
     return 'Unable to sign in. Please try again.';
+  }
+  logout(): void {
+    this.authService.logout();
+    void this.router.navigate(['/login']);
   }
 }
