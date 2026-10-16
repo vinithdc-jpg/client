@@ -1,20 +1,33 @@
-<section class="page-shell">
-  <div class="page-heading">
+<section class="grid gap-6">
+  <div class="flex items-start justify-between gap-5 max-[720px]:flex-col">
     <div>
-      <h1>{{ user()?.role === 'client' ? 'Your projects' : 'Discover projects' }}</h1>
-      <p>
-        {{ user()?.role === 'client'
-          ? 'Manage your projects and review freelancer proposals.'
-          : 'Find open work that matches your skills and submit a proposal.' }}
+      <h1
+        class="m-0 text-[clamp(1.7rem,3vw,2.15rem)] font-bold tracking-[-0.035em] text-[#172d46] dark:text-slate-100"
+      >
+        {{ user()?.role === 'client' ? 'Your projects' : 'Discover projects' }}
+      </h1>
+      <p class="mt-2 mb-0 text-[#657487] dark:text-slate-400">
+        {{
+          user()?.role === 'client'
+            ? 'Manage your projects and review freelancer proposals.'
+            : 'Find open work that matches your skills and submit a proposal.'
+        }}
       </p>
     </div>
     @if (user()?.role === 'client') {
-      <a class="button button-primary" routerLink="/projects/new">Create a project</a>
+      <a
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+        routerLink="/projects/new"
+        >Create a project</a
+      >
     }
   </div>
 
-  <form class="panel filter-row" (ngSubmit)="applyFilters()">
-    <div class="field filter-search">
+  <form
+    class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] flex flex-wrap items-end gap-3 dark:bg-slate-900 dark:border-slate-700"
+    (ngSubmit)="applyFilters()"
+  >
+    <div class="grid min-w-0 gap-[7px] flex-[1_1_260px]">
       <label for="project-search">Search projects</label>
       <input
         id="project-search"
@@ -24,7 +37,7 @@
         [(ngModel)]="search"
       />
     </div>
-    <div class="field filter-status">
+    <div class="grid min-w-0 gap-[7px] flex-[0_1_190px]">
       <label for="project-status">Status</label>
       <select id="project-status" name="status" [(ngModel)]="status">
         <option value="">All visible statuses</option>
@@ -34,29 +47,52 @@
         <option value="cancelled">Cancelled</option>
       </select>
     </div>
-    <button class="button button-secondary" type="submit" [disabled]="isLoading">
+    <button
+      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
+      type="submit"
+      [disabled]="isLoading"
+    >
       Apply filters
     </button>
   </form>
 
   @if (errorMessage) {
-    <p class="notice notice-error" role="alert">{{ errorMessage }}</p>
+    <p
+      class="rounded-lg px-[14px] py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
+      role="alert"
+    >
+      {{ errorMessage }}
+    </p>
   }
 
   @if (isLoading) {
-    <div class="panel loading-state" role="status">Loading projects...</div>
+    <div
+      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] px-5 py-[38px] text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
+      role="status"
+    >
+      Loading projects...
+    </div>
   } @else if (projects.length > 0) {
-    <div class="project-grid">
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-4">
       @for (project of projects; track project.id) {
-        <a class="project-card" [routerLink]="['/projects', project.id]">
-          <div class="proposal-header">
-            <h2>{{ project.title }}</h2>
+        <a
+          class="grid min-h-[230px] content-start gap-4 rounded-[14px] border border-[#e2e8f0] bg-white p-[22px] text-inherit shadow-[0_5px_18px_rgb(26_48_75_/_4%)] transition-[border-color,transform] duration-[140ms] hover:-translate-y-0.5 hover:border-[#b6cbe0] dark:bg-slate-900 dark:border-slate-700 dark:hover:border-slate-500"
+          [routerLink]="['/projects', project.id]"
+        >
+          <div class="flex flex-wrap items-center justify-between gap-2.5">
+            <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100">
+              {{ project.title }}
+            </h2>
             <span [class]="'status-badge status-' + project.status">
               {{ project.status.replace('_', ' ') }}
             </span>
           </div>
-          <p class="project-card-description">{{ project.description }}</p>
-          <div class="project-meta">
+          <p class="m-0 line-clamp-3 leading-[1.55] text-[#637286] dark:text-slate-300">
+            {{ project.description }}
+          </p>
+          <div
+            class="flex flex-wrap gap-x-[18px] gap-y-2.5 text-[0.88rem] text-[#536479] dark:text-slate-300"
+          >
             <span>Budget: {{ project.budget | currency }}</span>
             @if (project.deadline) {
               <span>Due {{ project.deadline | date: 'mediumDate' }}</span>
@@ -65,15 +101,20 @@
             }
           </div>
           @if (user()?.role === 'freelancer' && project.client_name) {
-            <small>Posted by {{ project.client_name }}</small>
+            <small class="text-[#68778a] dark:text-slate-400"
+              >Posted by {{ project.client_name }}</small
+            >
           }
         </a>
       }
     </div>
 
-    <nav class="pagination" aria-label="Project result pages">
+    <nav
+      class="flex flex-wrap items-center justify-center gap-4 text-[#607085] dark:text-slate-400"
+      aria-label="Project result pages"
+    >
       <button
-        class="button button-secondary"
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
         type="button"
         (click)="previousPage()"
         [disabled]="offset === 0 || isLoading"
@@ -82,7 +123,7 @@
       </button>
       <span>Page {{ pageNumber }} of {{ pageCount }}</span>
       <button
-        class="button button-secondary"
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
         type="button"
         (click)="nextPage()"
         [disabled]="offset + limit >= total || isLoading"
@@ -91,15 +132,25 @@
       </button>
     </nav>
   } @else if (!errorMessage) {
-    <div class="panel empty-state">
-      <h2>No projects found</h2>
-      <p>
-        {{ user()?.role === 'client'
-          ? 'Create a project to start receiving proposals.'
-          : 'Try adjusting your filters, or check back for new opportunities.' }}
+    <div
+      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] px-5 py-[38px] text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
+    >
+      <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100 mb-2">
+        No projects found
+      </h2>
+      <p class="m-0 text-[#637286] dark:text-slate-300">
+        {{
+          user()?.role === 'client'
+            ? 'Create a project to start receiving proposals.'
+            : 'Try adjusting your filters, or check back for new opportunities.'
+        }}
       </p>
       @if (user()?.role === 'client') {
-        <a class="button button-primary" routerLink="/projects/new">Create a project</a>
+        <a
+          class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+          routerLink="/projects/new"
+          >Create a project</a
+        >
       }
     </div>
   }

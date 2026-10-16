@@ -1,13 +1,26 @@
-<section class="workspace-section" aria-labelledby="milestones-heading">
-  <div class="section-heading">
+<section class="grid gap-4" aria-labelledby="milestones-heading">
+  <div
+    class="mb-[18px] flex items-center justify-between gap-4 max-[720px]:items-start max-[720px]:flex-col"
+  >
     <div>
-      <h2 id="milestones-heading">Milestones</h2>
-      <p>Plan deliverables, track submissions, and review completed work.</p>
+      <h2
+        class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100"
+        id="milestones-heading"
+      >
+        Milestones
+      </h2>
+      <p class="m-0 text-[#637286] dark:text-slate-300">
+        Plan deliverables, track submissions, and review completed work.
+      </p>
     </div>
     @if (progress.total > 0) {
-      <div class="progress-summary">
+      <div
+        class="grid min-w-[min(270px,100%)] grid-cols-[1fr_auto] items-center gap-x-3 gap-y-[6px] text-[0.84rem] text-[#637286] dark:text-slate-400"
+      >
         <span>{{ milestoneProgressLabel }}</span>
-        <strong>{{ progress.percentage }}%</strong>
+        <strong class="text-base text-[#205b8f] dark:text-blue-300"
+          >{{ progress.percentage }}%</strong
+        >
         <progress
           [value]="progress.percentage"
           max="100"
@@ -18,15 +31,25 @@
   </div>
 
   @if (isLoadingMilestones) {
-    <div class="loading-state" role="status">Loading milestones...</div>
+    <div class="px-5 py-[38px] text-center text-[#68778a] dark:text-slate-400" role="status">
+      Loading milestones...
+    </div>
   } @else if (milestones.length) {
-    <div class="milestone-list">
+    <div class="grid gap-3">
       @for (milestone of milestones; track milestone.id; let index = $index) {
-        <article class="milestone-card">
-          <div class="milestone-topline">
-            <div class="milestone-title">
-              <span class="position-label">Milestone {{ index + 1 }}</span>
-              <h3>{{ milestone.title }}</h3>
+        <article
+          class="grid gap-[14px] rounded-xl border border-[#e2e8f0] bg-white p-[19px] dark:bg-slate-900 dark:border-slate-700"
+        >
+          <div
+            class="flex items-center justify-between gap-3 max-[720px]:items-start max-[720px]:flex-col"
+          >
+            <div class="flex flex-wrap items-center justify-start gap-3">
+              <span class="text-xs font-semibold text-[#68778a] dark:text-slate-400"
+                >Milestone {{ index + 1 }}</span
+              >
+              <h3 class="m-0 text-base font-bold text-[#1b334f] dark:text-slate-100">
+                {{ milestone.title }}
+              </h3>
             </div>
             <span [class]="'status-badge status-' + milestone.status">
               {{ milestone.status.replace('_', ' ') }}
@@ -34,9 +57,9 @@
           </div>
 
           @if (editingMilestoneId === milestone.id) {
-            <form class="compact-form" (ngSubmit)="saveMilestone(milestone)">
-              <div class="form-grid">
-                <div class="field field-wide">
+            <form class="grid gap-3 p-5" (ngSubmit)="saveMilestone(milestone)">
+              <div class="grid grid-cols-1 gap-[18px] min-[721px]:grid-cols-2">
+                <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
                   <label [for]="'edit-milestone-title-' + milestone.id">Title</label>
                   <input
                     [id]="'edit-milestone-title-' + milestone.id"
@@ -46,9 +69,10 @@
                     maxlength="150"
                   />
                 </div>
-                <div class="field field-wide">
+                <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
                   <label [for]="'edit-milestone-description-' + milestone.id">Description</label>
                   <textarea
+                    class="min-h-[72px]"
                     [id]="'edit-milestone-description-' + milestone.id"
                     name="editMilestoneDescription"
                     [(ngModel)]="editMilestoneDescription"
@@ -56,7 +80,7 @@
                     rows="3"
                   ></textarea>
                 </div>
-                <div class="field">
+                <div class="grid min-w-0 gap-[7px]">
                   <label [for]="'edit-milestone-amount-' + milestone.id">Amount</label>
                   <input
                     [id]="'edit-milestone-amount-' + milestone.id"
@@ -68,7 +92,7 @@
                     required
                   />
                 </div>
-                <div class="field">
+                <div class="grid min-w-0 gap-[7px]">
                   <label [for]="'edit-milestone-date-' + milestone.id">Due date</label>
                   <input
                     [id]="'edit-milestone-date-' + milestone.id"
@@ -78,12 +102,16 @@
                   />
                 </div>
               </div>
-              <div class="form-actions">
-                <button class="button button-primary" type="submit" [disabled]="isSaving">
+              <div class="mt-5 flex flex-wrap gap-2.5">
+                <button
+                  class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+                  type="submit"
+                  [disabled]="isSaving"
+                >
                   Save milestone
                 </button>
                 <button
-                  class="button button-secondary"
+                  class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
                   type="button"
                   (click)="cancelMilestoneEdit()"
                   [disabled]="isSaving"
@@ -94,28 +122,39 @@
             </form>
           } @else {
             @if (milestone.description) {
-              <p class="milestone-description">{{ milestone.description }}</p>
+              <p class="m-0 whitespace-pre-wrap leading-normal text-[#536479] dark:text-slate-300">
+                {{ milestone.description }}
+              </p>
             }
-            <div class="project-meta milestone-meta">
-              <span><strong>Amount</strong> {{ milestone.amount | currency }}</span>
+            <div
+              class="flex flex-wrap gap-x-[18px] gap-y-2.5 text-[0.88rem] text-[#536479] dark:text-slate-300"
+            >
+              <span
+                ><strong class="text-[#34465b] dark:text-slate-300">Amount</strong>
+                {{ milestone.amount | currency }}</span
+              >
               <span>
-                <strong>Due</strong>
+                <strong class="text-[#34465b] dark:text-slate-300">Due</strong>
                 {{ milestone.due_date ? (milestone.due_date | date: 'mediumDate') : 'Not set' }}
               </span>
             </div>
             @if (milestone.latest_submission) {
-              <div class="submission-note">
-                <strong>Latest submission</strong>
-                <p>{{ milestone.latest_submission }}</p>
+              <div
+                class="rounded-r-lg border-l-[3px] border-[#8bb4d5] bg-[#f2f7fb] p-3 text-[0.86rem] text-[#425970] dark:bg-slate-800 dark:border-blue-700 dark:text-slate-300"
+              >
+                <strong class="text-[#34465b] dark:text-slate-300">Latest submission</strong>
+                <p class="m-0 text-[#637286] dark:text-slate-300">
+                  {{ milestone.latest_submission }}
+                </p>
               </div>
             }
           }
 
-          <div class="workspace-actions">
+          <div class="flex flex-wrap items-center gap-[6px]">
             @if (canManage) {
               @if (milestone.status === 'pending' || milestone.status === 'in_progress') {
                 <button
-                  class="button button-secondary"
+                  class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
                   type="button"
                   (click)="beginMilestoneEdit(milestone)"
                   [disabled]="isSaving"
@@ -124,7 +163,7 @@
                 </button>
               }
               <button
-                class="button button-quiet"
+                class="inline-flex min-h-[30px] cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[7px] py-[5px] text-[0.76rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#d6dee8] bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
                 type="button"
                 (click)="moveMilestone(index, -1)"
                 [disabled]="index === 0 || isSaving"
@@ -133,7 +172,7 @@
                 Move up
               </button>
               <button
-                class="button button-quiet"
+                class="inline-flex min-h-[30px] cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[7px] py-[5px] text-[0.76rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#d6dee8] bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
                 type="button"
                 (click)="moveMilestone(index, 1)"
                 [disabled]="index === milestones.length - 1 || isSaving"
@@ -144,7 +183,7 @@
             }
             @if (role === 'freelancer' && isActiveProject && milestone.status === 'pending') {
               <button
-                class="button button-primary"
+                class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
                 type="button"
                 (click)="startMilestone(milestone)"
                 [disabled]="isSaving"
@@ -155,9 +194,10 @@
           </div>
 
           @if (role === 'freelancer' && isActiveProject && milestone.status === 'in_progress') {
-            <div class="milestone-workflow">
+            <div class="grid gap-3 border-t border-[#eef1f5] pt-3 dark:border-slate-700">
               <label [for]="'submission-' + milestone.id">Submission note</label>
               <textarea
+                class="min-h-[72px]"
                 [id]="'submission-' + milestone.id"
                 [name]="'submission-' + milestone.id"
                 [(ngModel)]="submissionDrafts[milestone.id]"
@@ -166,7 +206,7 @@
                 placeholder="Describe the completed deliverable."
               ></textarea>
               <button
-                class="button button-primary"
+                class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
                 type="button"
                 (click)="submitMilestone(milestone)"
                 [disabled]="isSaving"
@@ -177,9 +217,10 @@
           }
 
           @if (role === 'client' && isActiveProject && milestone.status === 'submitted') {
-            <div class="milestone-workflow">
+            <div class="grid gap-3 border-t border-[#eef1f5] pt-3 dark:border-slate-700">
               <label [for]="'feedback-' + milestone.id">Review feedback (optional)</label>
               <textarea
+                class="min-h-[72px]"
                 [id]="'feedback-' + milestone.id"
                 [name]="'feedback-' + milestone.id"
                 [(ngModel)]="reviewFeedback[milestone.id]"
@@ -187,9 +228,9 @@
                 rows="2"
                 placeholder="Add feedback if changes are needed."
               ></textarea>
-              <div class="workspace-actions">
+              <div class="flex flex-wrap items-center gap-[6px]">
                 <button
-                  class="button button-primary"
+                  class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
                   type="button"
                   (click)="reviewMilestone(milestone, 'approve')"
                   [disabled]="isSaving"
@@ -197,7 +238,7 @@
                   Approve
                 </button>
                 <button
-                  class="button button-secondary"
+                  class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
                   type="button"
                   (click)="reviewMilestone(milestone, 'request_changes')"
                   [disabled]="isSaving"
@@ -211,17 +252,22 @@
       }
     </div>
   } @else {
-    <div class="empty-state compact-empty">
-      <h3>No milestones yet</h3>
-      <p>The project client can add milestones to outline the deliverables.</p>
+    <div class="px-5 py-[38px] text-center text-[#68778a] pb-3 dark:text-slate-400">
+      <h3 class="m-0 text-base font-bold text-[#1b334f] dark:text-slate-100">No milestones yet</h3>
+      <p class="m-0 text-[#637286] dark:text-slate-300">
+        The project client can add milestones to outline the deliverables.
+      </p>
     </div>
   }
 
   @if (canManage) {
-    <form class="panel compact-form" (ngSubmit)="createMilestone()">
-      <h3>Add a milestone</h3>
-      <div class="form-grid">
-        <div class="field field-wide">
+    <form
+      class="rounded-[14px] border border-[#e2e8f0] bg-white shadow-[0_5px_18px_rgb(26_48_75_/_4%)] grid gap-3 p-5 dark:bg-slate-900 dark:border-slate-700"
+      (ngSubmit)="createMilestone()"
+    >
+      <h3 class="m-0 text-base font-bold text-[#1b334f] dark:text-slate-100">Add a milestone</h3>
+      <div class="grid grid-cols-1 gap-[18px] min-[721px]:grid-cols-2">
+        <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
           <label for="new-milestone-title">Title</label>
           <input
             id="new-milestone-title"
@@ -231,9 +277,10 @@
             maxlength="150"
           />
         </div>
-        <div class="field field-wide">
+        <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
           <label for="new-milestone-description">Description (optional)</label>
           <textarea
+            class="min-h-[130px]"
             id="new-milestone-description"
             name="milestoneDescription"
             [(ngModel)]="milestoneDescription"
@@ -241,7 +288,7 @@
             rows="3"
           ></textarea>
         </div>
-        <div class="field">
+        <div class="grid min-w-0 gap-[7px]">
           <label for="new-milestone-amount">Amount</label>
           <input
             id="new-milestone-amount"
@@ -253,7 +300,7 @@
             step="0.01"
           />
         </div>
-        <div class="field">
+        <div class="grid min-w-0 gap-[7px]">
           <label for="new-milestone-date">Due date (optional)</label>
           <input
             id="new-milestone-date"
@@ -263,9 +310,9 @@
           />
         </div>
       </div>
-      <div class="form-actions">
+      <div class="mt-5 flex flex-wrap gap-2.5">
         <button
-          class="button button-primary"
+          class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
           type="submit"
           [disabled]="isCreatingMilestone"
         >
@@ -276,22 +323,36 @@
   }
 </section>
 
-<section class="workspace-section" aria-labelledby="tasks-heading">
-  <div class="section-heading">
+<section class="grid gap-4" aria-labelledby="tasks-heading">
+  <div
+    class="mb-[18px] flex items-center justify-between gap-4 max-[720px]:items-start max-[720px]:flex-col"
+  >
     <div>
-      <h2 id="tasks-heading">Task board</h2>
-      <p>Move work through to-do, in progress, review, and completed.</p>
+      <h2
+        class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100"
+        id="tasks-heading"
+      >
+        Task board
+      </h2>
+      <p class="m-0 text-[#637286] dark:text-slate-300">
+        Move work through to-do, in progress, review, and completed.
+      </p>
     </div>
     @if (isLoadingTasks) {
-      <span class="detail-subtle" role="status">Loading tasks...</span>
+      <span class="text-[0.86rem] text-[#6a7889] dark:text-slate-400" role="status"
+        >Loading tasks...</span
+      >
     }
   </div>
 
   @if (canManage) {
-    <form class="panel compact-form" (ngSubmit)="createTask()">
-      <h3>Add a task</h3>
-      <div class="form-grid">
-        <div class="field field-wide">
+    <form
+      class="rounded-[14px] border border-[#e2e8f0] bg-white shadow-[0_5px_18px_rgb(26_48_75_/_4%)] grid gap-3 p-5 dark:bg-slate-900 dark:border-slate-700"
+      (ngSubmit)="createTask()"
+    >
+      <h3 class="m-0 text-base font-bold text-[#1b334f] dark:text-slate-100">Add a task</h3>
+      <div class="grid grid-cols-1 gap-[18px] min-[721px]:grid-cols-2">
+        <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
           <label for="new-task-title">Title</label>
           <input
             id="new-task-title"
@@ -301,9 +362,10 @@
             maxlength="150"
           />
         </div>
-        <div class="field field-wide">
+        <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
           <label for="new-task-description">Description (optional)</label>
           <textarea
+            class="min-h-[130px]"
             id="new-task-description"
             name="taskDescription"
             [(ngModel)]="taskDescription"
@@ -311,7 +373,7 @@
             rows="3"
           ></textarea>
         </div>
-        <div class="field">
+        <div class="grid min-w-0 gap-[7px]">
           <label for="new-task-priority">Priority</label>
           <select id="new-task-priority" name="taskPriority" [(ngModel)]="taskPriority">
             @for (priority of priorities; track priority) {
@@ -319,35 +381,22 @@
             }
           </select>
         </div>
-        <div class="field">
+        <div class="grid min-w-0 gap-[7px]">
           <label for="new-task-date">Due date (optional)</label>
-          <input
-            id="new-task-date"
-            name="taskDueDate"
-            type="date"
-            [(ngModel)]="taskDueDate"
-          />
+          <input id="new-task-date" name="taskDueDate" type="date" [(ngModel)]="taskDueDate" />
         </div>
-        <div class="field">
+        <div class="grid min-w-0 gap-[7px]">
           <label for="new-task-milestone">Milestone (optional)</label>
-          <select
-            id="new-task-milestone"
-            name="taskMilestoneId"
-            [(ngModel)]="taskMilestoneId"
-          >
+          <select id="new-task-milestone" name="taskMilestoneId" [(ngModel)]="taskMilestoneId">
             <option value="">No milestone</option>
             @for (milestone of milestones; track milestone.id) {
               <option [value]="milestone.id">{{ milestone.title }}</option>
             }
           </select>
         </div>
-        <div class="field">
+        <div class="grid min-w-0 gap-[7px]">
           <label for="new-task-assignee">Assignee (optional)</label>
-          <select
-            id="new-task-assignee"
-            name="taskAssigneeId"
-            [(ngModel)]="taskAssigneeId"
-          >
+          <select id="new-task-assignee" name="taskAssigneeId" [(ngModel)]="taskAssigneeId">
             <option value="">Unassigned</option>
             @if (assignedFreelancerId) {
               <option [value]="assignedFreelancerId">
@@ -357,8 +406,12 @@
           </select>
         </div>
       </div>
-      <div class="form-actions">
-        <button class="button button-primary" type="submit" [disabled]="isCreatingTask">
+      <div class="mt-5 flex flex-wrap gap-2.5">
+        <button
+          class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+          type="submit"
+          [disabled]="isCreatingTask"
+        >
           {{ isCreatingTask ? 'Adding...' : 'Add task' }}
         </button>
       </div>
@@ -366,43 +419,56 @@
   }
 
   @if (!isLoadingTasks && !tasks.length) {
-    <div class="empty-state compact-empty">
-      <h3>No tasks yet</h3>
-      <p>Tasks created for this project will appear in the board.</p>
+    <div class="px-5 py-[38px] text-center text-[#68778a] pb-3 dark:text-slate-400">
+      <h3 class="m-0 text-base font-bold text-[#1b334f] dark:text-slate-100">No tasks yet</h3>
+      <p class="m-0 text-[#637286] dark:text-slate-300">
+        Tasks created for this project will appear in the board.
+      </p>
     </div>
   } @else {
-    <div class="kanban-board" aria-label="Project Kanban board">
+    <div
+      class="grid grid-cols-[repeat(4,minmax(235px,1fr))] gap-[14px] overflow-x-auto px-0.5 pt-0.5 pb-2.5 max-[720px]:grid-cols-[repeat(4,minmax(255px,1fr))]"
+      aria-label="Project Kanban board"
+    >
       @for (status of statuses; track status) {
         <section
-          class="kanban-column"
+          class="flex min-h-[220px] flex-col gap-3 rounded-xl border border-[#e1e7ef] bg-[#eef2f7] p-[13px] dark:bg-slate-800 dark:border-slate-700"
           [attr.aria-label]="taskStatusLabel(status) + ' tasks'"
           (dragover)="allowTaskDrop($event)"
           (drop)="dropTask($event, status, tasksIn(status).length)"
         >
-          <header class="kanban-column-heading">
-            <h3>{{ taskStatusLabel(status) }}</h3>
-            <span class="count-label">{{ tasksIn(status).length }}</span>
+          <header class="flex items-center justify-between capitalize">
+            <h3 class="m-0 text-base font-bold text-[#1b334f] dark:text-slate-100">
+              {{ taskStatusLabel(status) }}
+            </h3>
+            <span class="text-[0.86rem] text-[#6a7889] dark:text-slate-400">{{
+              tasksIn(status).length
+            }}</span>
           </header>
-          <div class="kanban-card-list">
+          <div class="grid flex-1 content-start gap-2.5">
             @for (task of tasksIn(status); track task.id; let index = $index) {
               <article
-                class="task-card"
-                [class.task-card-draggable]="canDragTask(task)"
+                class="grid gap-2.5 rounded-[10px] border border-[#e0e6ee] bg-white p-[14px] shadow-[0_3px_9px_rgb(26_48_75_/_4%)] dark:bg-slate-900 dark:border-slate-700"
                 [attr.draggable]="canDragTask(task) && !isSaving"
                 (dragstart)="startTaskDrag($event, task)"
                 (dragover)="allowTaskDrop($event)"
                 (drop)="dropTask($event, status, index)"
               >
-                <div class="task-card-heading">
-                  <h4>{{ task.title }}</h4>
-                  <span [class]="'priority-badge priority-' + task.priority">
+                <div class="flex items-start justify-between gap-3">
+                  <h4 class="m-0 text-[0.95rem] font-bold text-[#233a55] dark:text-slate-100">
+                    {{ task.title }}
+                  </h4>
+                  <span
+                    class="flex-none rounded-full bg-[#edf1f5] px-[7px] py-[3px] text-[0.7rem] font-bold capitalize text-[#526174] dark:bg-slate-700 dark:text-slate-300"
+                  >
                     {{ task.priority }}
                   </span>
                 </div>
                 @if (editingTaskId === task.id) {
-                  <form class="task-edit-form" (ngSubmit)="saveTask(task)">
+                  <form class="grid gap-2" (ngSubmit)="saveTask(task)">
                     <label [for]="'edit-task-title-' + task.id">Title</label>
                     <input
+                      class="min-h-[38px] rounded-[7px] px-2.5 py-2"
                       [id]="'edit-task-title-' + task.id"
                       [name]="'edit-task-title-' + task.id"
                       [(ngModel)]="editTaskTitle"
@@ -411,6 +477,7 @@
                     />
                     <label [for]="'edit-task-description-' + task.id">Description</label>
                     <textarea
+                      class="min-h-[38px]"
                       [id]="'edit-task-description-' + task.id"
                       [name]="'edit-task-description-' + task.id"
                       [(ngModel)]="editTaskDescription"
@@ -419,6 +486,7 @@
                     ></textarea>
                     <label [for]="'edit-task-priority-' + task.id">Priority</label>
                     <select
+                      class="min-h-[38px] rounded-[7px] px-2.5 py-2"
                       [id]="'edit-task-priority-' + task.id"
                       [name]="'edit-task-priority-' + task.id"
                       [(ngModel)]="editTaskPriority"
@@ -429,6 +497,7 @@
                     </select>
                     <label [for]="'edit-task-date-' + task.id">Due date</label>
                     <input
+                      class="min-h-[38px] rounded-[7px] px-2.5 py-2"
                       [id]="'edit-task-date-' + task.id"
                       [name]="'edit-task-date-' + task.id"
                       type="date"
@@ -436,6 +505,7 @@
                     />
                     <label [for]="'edit-task-milestone-' + task.id">Milestone</label>
                     <select
+                      class="min-h-[38px] rounded-[7px] px-2.5 py-2"
                       [id]="'edit-task-milestone-' + task.id"
                       [name]="'edit-task-milestone-' + task.id"
                       [(ngModel)]="editTaskMilestoneId"
@@ -447,6 +517,7 @@
                     </select>
                     <label [for]="'edit-task-assignee-' + task.id">Assignee</label>
                     <select
+                      class="min-h-[38px] rounded-[7px] px-2.5 py-2"
                       [id]="'edit-task-assignee-' + task.id"
                       [name]="'edit-task-assignee-' + task.id"
                       [(ngModel)]="editTaskAssigneeId"
@@ -458,12 +529,16 @@
                         </option>
                       }
                     </select>
-                    <div class="comment-actions">
-                      <button class="button button-primary" type="submit" [disabled]="isSaving">
+                    <div class="flex flex-wrap items-center gap-[6px]">
+                      <button
+                        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+                        type="submit"
+                        [disabled]="isSaving"
+                      >
                         Save task
                       </button>
                       <button
-                        class="button button-secondary"
+                        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
                         type="button"
                         (click)="cancelTaskEdit()"
                         [disabled]="isSaving"
@@ -476,7 +551,9 @@
                   @if (task.description) {
                     <p class="task-description">{{ task.description }}</p>
                   }
-                  <div class="task-meta">
+                  <div
+                    class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-[#68778a] dark:text-slate-400"
+                  >
                     @if (task.assignee_name) {
                       <span>{{ task.assignee_name }}</span>
                     } @else {
@@ -487,12 +564,15 @@
                     }
                   </div>
                   @if (task.milestone_title) {
-                    <span class="task-milestone">{{ task.milestone_title }}</span>
+                    <span
+                      class="rounded-full bg-[#eef2f6] px-2 py-1 text-[0.75rem] capitalize text-[#526174] dark:bg-slate-700 dark:text-slate-300"
+                      >{{ task.milestone_title }}</span
+                    >
                   }
-                  <div class="task-move-actions">
+                  <div class="flex flex-wrap items-center gap-0.5">
                     @if (canManage) {
                       <button
-                        class="button button-quiet"
+                        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#d6dee8] bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
                         type="button"
                         (click)="beginTaskEdit(task)"
                       >
@@ -501,7 +581,7 @@
                     }
                     @for (target of taskMoveOptions(task); track target) {
                       <button
-                        class="button button-quiet"
+                        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#d6dee8] bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
                         type="button"
                         (click)="moveTask(task, target, tasksIn(target).length)"
                         [disabled]="isSaving"
@@ -511,7 +591,7 @@
                     }
                     @if (canDragTask(task) && tasksIn(status).length > 1) {
                       <button
-                        class="button button-quiet reorder-button"
+                        class="inline-flex min-h-[30px] cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[7px] py-[5px] text-[0.76rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#d6dee8] bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
                         type="button"
                         (click)="moveTask(task, status, index - 1)"
                         [disabled]="index === 0 || isSaving"
@@ -520,7 +600,7 @@
                         ↑
                       </button>
                       <button
-                        class="button button-quiet reorder-button"
+                        class="inline-flex min-h-[30px] cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[7px] py-[5px] text-[0.76rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#d6dee8] bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
                         type="button"
                         (click)="moveTask(task, status, index + 1)"
                         [disabled]="index === tasksIn(status).length - 1 || isSaving"
@@ -531,7 +611,7 @@
                     }
                   </div>
                   <button
-                    class="comments-toggle"
+                    class="justify-self-start cursor-pointer border-0 bg-transparent px-0 py-[3px] text-[0.8rem] font-[650] text-[#235b8e] dark:text-blue-300"
                     type="button"
                     (click)="toggleComments(task)"
                     [attr.aria-expanded]="activeTaskCommentsId === task.id"
@@ -540,28 +620,39 @@
                     comments ({{ task.comment_count ?? 0 }})
                   </button>
                   @if (activeTaskCommentsId === task.id) {
-                    <div class="task-comments">
+                    <div
+                      class="grid gap-2.5 border-t border-[#eef1f5] pt-2.5 dark:border-slate-700"
+                    >
                       @if (loadingCommentsTaskId === task.id) {
-                        <p class="detail-subtle" role="status">Loading comments...</p>
+                        <p class="text-[0.86rem] text-[#6a7889] dark:text-slate-400" role="status">
+                          Loading comments...
+                        </p>
                       }
                       @for (comment of commentsByTask[task.id] ?? []; track comment.id) {
-                        <article class="comment-card">
-                          <div class="comment-heading">
-                            <strong>{{ comment.author_name }}</strong>
+                        <article
+                          class="grid gap-[7px] rounded-lg bg-[#f7f9fb] p-2.5 dark:bg-slate-800"
+                        >
+                          <div
+                            class="flex items-center justify-between gap-3 text-[0.76rem] text-[#526174] dark:text-slate-300"
+                          >
+                            <strong class="text-[#34465b] dark:text-slate-300">{{
+                              comment.author_name
+                            }}</strong>
                             <time [attr.datetime]="comment.created_at">
                               {{ comment.created_at | date: 'short' }}
                             </time>
                           </div>
                           @if (editingCommentId === comment.id) {
                             <textarea
+                              class="min-h-[72px]"
                               [name]="'edit-comment-' + comment.id"
                               [(ngModel)]="editedCommentContent"
                               maxlength="5000"
                               rows="3"
                             ></textarea>
-                            <div class="comment-actions">
+                            <div class="flex flex-wrap items-center gap-[6px]">
                               <button
-                                class="button button-quiet"
+                                class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#d6dee8] bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
                                 type="button"
                                 (click)="saveComment(comment)"
                                 [disabled]="commentBusyId !== ''"
@@ -569,7 +660,7 @@
                                 Save
                               </button>
                               <button
-                                class="button button-quiet"
+                                class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#d6dee8] bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
                                 type="button"
                                 (click)="cancelCommentEdit()"
                                 [disabled]="commentBusyId !== ''"
@@ -578,11 +669,13 @@
                               </button>
                             </div>
                           } @else {
-                            <p>{{ comment.content }}</p>
-                            <div class="comment-actions">
+                            <p class="m-0 text-[#637286] dark:text-slate-300">
+                              {{ comment.content }}
+                            </p>
+                            <div class="flex flex-wrap items-center gap-[6px]">
                               @if (canEditComment(comment)) {
                                 <button
-                                  class="button button-quiet"
+                                  class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#d6dee8] bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
                                   type="button"
                                   (click)="beginCommentEdit(comment)"
                                 >
@@ -591,7 +684,7 @@
                               }
                               @if (canDeleteComment(comment)) {
                                 <button
-                                  class="button button-quiet"
+                                  class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#d6dee8] bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
                                   type="button"
                                   (click)="deleteComment(comment)"
                                   [disabled]="commentBusyId !== ''"
@@ -603,9 +696,10 @@
                           }
                         </article>
                       }
-                      <form class="comment-form" (ngSubmit)="addComment(task)">
+                      <form class="grid gap-2" (ngSubmit)="addComment(task)">
                         <label [for]="'comment-' + task.id">Add a comment</label>
                         <textarea
+                          class="min-h-[72px]"
                           [id]="'comment-' + task.id"
                           [name]="'comment-' + task.id"
                           [(ngModel)]="commentDrafts[task.id]"
@@ -614,7 +708,7 @@
                           rows="2"
                         ></textarea>
                         <button
-                          class="button button-secondary"
+                          class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
                           type="submit"
                           [disabled]="commentBusyId === task.id"
                         >
@@ -626,7 +720,7 @@
                 }
               </article>
             } @empty {
-              <p class="column-empty">Drop a task here</p>
+              <p class="text-center text-sm text-[#68778a] dark:text-slate-400">Drop a task here</p>
             }
           </div>
         </section>
@@ -635,23 +729,36 @@
   }
 </section>
 
-<section class="workspace-section" aria-labelledby="activity-heading">
-  <div class="section-heading">
+<section class="grid gap-4" aria-labelledby="activity-heading">
+  <div
+    class="mb-[18px] flex items-center justify-between gap-4 max-[720px]:items-start max-[720px]:flex-col"
+  >
     <div>
-      <h2 id="activity-heading">Recent activity</h2>
-      <p>Milestone, task, and comment updates from this project.</p>
+      <h2
+        class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100"
+        id="activity-heading"
+      >
+        Recent activity
+      </h2>
+      <p class="m-0 text-[#637286] dark:text-slate-300">
+        Milestone, task, and comment updates from this project.
+      </p>
     </div>
   </div>
   @if (isLoadingActivity) {
-    <div class="loading-state" role="status">Loading activity...</div>
+    <div class="px-5 py-[38px] text-center text-[#68778a] dark:text-slate-400" role="status">
+      Loading activity...
+    </div>
   } @else if (activity.length) {
-    <ol class="activity-list">
+    <ol class="m-0 grid list-none gap-0 p-0">
       @for (item of activity; track item.id) {
-        <li class="activity-item">
-          <span class="activity-dot" aria-hidden="true"></span>
+        <li
+          class="grid grid-cols-[12px_1fr] gap-3 border-b border-[#edf0f4] py-3 last:border-b-0 dark:border-slate-700"
+        >
+          <span class="mt-[5px] size-[9px] rounded-full bg-[#4280b5]" aria-hidden="true"></span>
           <div>
-            <p>
-              <strong>{{ item.actor_name }}</strong>
+            <p class="m-0 text-[#637286] dark:text-slate-300">
+              <strong class="text-[#34465b] dark:text-slate-300">{{ item.actor_name }}</strong>
               {{ humanizeAction(item.action) }}
             </p>
             <time [attr.datetime]="item.created_at">
@@ -662,8 +769,8 @@
       }
     </ol>
   } @else {
-    <div class="empty-state compact-empty">
-      <p>No project activity yet.</p>
+    <div class="px-5 py-[38px] text-center text-[#68778a] pb-3 dark:text-slate-400">
+      <p class="m-0 text-[#637286] dark:text-slate-300">No project activity yet.</p>
     </div>
   }
 </section>

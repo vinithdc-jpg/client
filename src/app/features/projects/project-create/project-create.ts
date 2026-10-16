@@ -9,7 +9,6 @@ import { apiErrorMessage } from '../../../../core/utils/api-error-message';
   standalone: true,
   imports: [FormsModule, RouterLink],
   templateUrl: './project-create.html',
-  styleUrl: './project-create.css',
 })
 export class ProjectCreateComponent {
   private readonly projectService = inject(ProjectService);

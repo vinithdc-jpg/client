@@ -39,7 +39,6 @@ const taskPriorities: TaskPriority[] = ['low', 'medium', 'high', 'urgent'];
   standalone: true,
   imports: [CurrencyPipe, DatePipe, FormsModule],
   templateUrl: './project-workspace.html',
-  styleUrl: './project-workspace.css',
 })
 export class ProjectWorkspaceComponent implements OnChanges {
   private readonly projectService = inject(ProjectService);

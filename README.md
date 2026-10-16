@@ -24,6 +24,13 @@ npm start
 
 The application is served at `http://localhost:4200`.
 
+## Styling
+
+The client uses Tailwind CSS 4. UI layout and component styling use Tailwind
+utilities in Angular templates. `src/styles.css` contains the base reset and
+dynamic project status badge styles. Light and dark colors follow the operating
+system's color-scheme preference.
+
 ## Verification
 
 ```bash

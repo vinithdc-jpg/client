@@ -29,7 +29,6 @@ import { ProjectWorkspaceComponent } from '../project-workspace/project-workspac
     RouterLink,
   ],
   templateUrl: './project-detail.html',
-  styleUrl: './project-detail.css',
 })
 export class ProjectDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);

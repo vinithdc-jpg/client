@@ -1,24 +1,40 @@
-<section class="page-shell">
-  <div class="page-heading">
+<section class="grid gap-6">
+  <div class="flex items-start justify-between gap-5 max-[720px]:flex-col">
     <div>
-      <a routerLink="/projects" class="back-link">Back to projects</a>
+      <a routerLink="/projects" class="mb-2.5 inline-block text-[0.9rem] font-[650]"
+        >Back to projects</a
+      >
       @if (project) {
-        <h1>{{ project.title }}</h1>
-        <p>Project workspace and proposal details</p>
+        <h1
+          class="m-0 text-[clamp(1.7rem,3vw,2.15rem)] font-bold tracking-[-0.035em] text-[#172d46] dark:text-slate-100"
+        >
+          {{ project.title }}
+        </h1>
+        <p class="mt-2 mb-0 text-[#657487] dark:text-slate-400">
+          Project workspace and proposal details
+        </p>
       } @else {
-        <h1>Project details</h1>
+        <h1
+          class="m-0 text-[clamp(1.7rem,3vw,2.15rem)] font-bold tracking-[-0.035em] text-[#172d46] dark:text-slate-100"
+        >
+          Project details
+        </h1>
       }
     </div>
     @if (project && !isEditing && (canEdit || canCancel || canComplete)) {
-      <div class="heading-actions">
+      <div class="flex flex-wrap justify-end gap-2 max-[720px]:justify-start">
         @if (canEdit) {
-          <button class="button button-secondary" type="button" (click)="beginEdit()">
+          <button
+            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
+            type="button"
+            (click)="beginEdit()"
+          >
             Edit project
           </button>
         }
         @if (canComplete) {
           <button
-            class="button button-primary"
+            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
             type="button"
             [disabled]="isSaving"
             (click)="changeProjectStatus('completed')"
@@ -28,7 +44,7 @@
         }
         @if (canCancel) {
           <button
-            class="button button-danger"
+            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#f0c5c1] bg-white text-[#a32d28] hover:enabled:bg-[#fff4f2] dark:bg-slate-900 dark:border-red-800"
             type="button"
             [disabled]="isSaving"
             (click)="changeProjectStatus('cancelled')"
@@ -41,20 +57,41 @@
   </div>
 
   @if (errorMessage) {
-    <p class="notice notice-error" role="alert">{{ errorMessage }}</p>
+    <p
+      class="rounded-lg px-[14px] py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
+      role="alert"
+    >
+      {{ errorMessage }}
+    </p>
   }
   @if (successMessage) {
-    <p class="notice notice-success" role="status">{{ successMessage }}</p>
+    <p
+      class="rounded-lg px-[14px] py-3 leading-normal border border-[#bfe2ca] bg-[#effaf2] text-[#23643b] dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300"
+      role="status"
+    >
+      {{ successMessage }}
+    </p>
   }
 
   @if (isLoading) {
-    <div class="panel loading-state" role="status">Loading project...</div>
+    <div
+      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] px-5 py-[38px] text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
+      role="status"
+    >
+      Loading project...
+    </div>
   } @else if (project) {
     @if (isEditing) {
-      <form class="panel" #editForm="ngForm" (ngSubmit)="saveProject()">
-        <h2>Edit project details</h2>
-        <div class="form-grid detail-edit-grid">
-          <div class="field field-wide">
+      <form
+        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] dark:bg-slate-900 dark:border-slate-700"
+        #editForm="ngForm"
+        (ngSubmit)="saveProject()"
+      >
+        <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100">
+          Edit project details
+        </h2>
+        <div class="grid grid-cols-1 gap-[18px] min-[721px]:grid-cols-2 detail-edit-grid">
+          <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
             <label for="edit-title">Project title</label>
             <input
               id="edit-title"
@@ -65,9 +102,10 @@
               maxlength="150"
             />
           </div>
-          <div class="field field-wide">
+          <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
             <label for="edit-description">Description</label>
             <textarea
+              class="min-h-[130px]"
               id="edit-description"
               name="description"
               [(ngModel)]="description"
@@ -76,7 +114,7 @@
               rows="6"
             ></textarea>
           </div>
-          <div class="field">
+          <div class="grid min-w-0 gap-[7px]">
             <label for="edit-budget">Budget</label>
             <input
               id="edit-budget"
@@ -88,26 +126,21 @@
               step="0.01"
             />
           </div>
-          <div class="field">
+          <div class="grid min-w-0 gap-[7px]">
             <label for="edit-deadline">Deadline (optional)</label>
-            <input
-              id="edit-deadline"
-              name="deadline"
-              type="date"
-              [(ngModel)]="deadline"
-            />
+            <input id="edit-deadline" name="deadline" type="date" [(ngModel)]="deadline" />
           </div>
         </div>
-        <div class="form-actions">
+        <div class="mt-5 flex flex-wrap gap-2.5">
           <button
-            class="button button-primary"
+            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
             type="submit"
             [disabled]="isSaving || editForm.invalid"
           >
             {{ isSaving ? 'Saving...' : 'Save changes' }}
           </button>
           <button
-            class="button button-secondary"
+            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
             type="button"
             (click)="cancelEdit()"
             [disabled]="isSaving"
@@ -117,61 +150,107 @@
         </div>
       </form>
     } @else {
-      <article class="panel project-detail-card">
-        <div class="proposal-header">
+      <article
+        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] grid gap-[22px] dark:bg-slate-900 dark:border-slate-700"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-2.5">
           <span [class]="'status-badge status-' + project.status">
             {{ statusLabel }}
           </span>
           @if (project.client_name && user()?.role === 'freelancer') {
-            <span class="detail-subtle">Posted by {{ project.client_name }}</span>
+            <span class="text-[0.86rem] text-[#6a7889] dark:text-slate-400"
+              >Posted by {{ project.client_name }}</span
+            >
           }
         </div>
-        <p class="project-description">{{ project.description }}</p>
-        <div class="project-meta detail-meta">
-          <span><strong>Budget</strong> {{ project.budget | currency }}</span>
+        <p class="m-0 whitespace-pre-wrap leading-[1.7] text-[#3c4e63] dark:text-slate-300">
+          {{ project.description }}
+        </p>
+        <div
+          class="flex flex-wrap gap-x-[18px] gap-y-2.5 text-[0.88rem] text-[#536479] border-t border-[#e8edf3] pt-[18px] dark:border-slate-700 dark:text-slate-300"
+        >
+          <span
+            ><strong class="mb-1 block text-[#34465b] dark:text-slate-300">Budget</strong>
+            {{ project.budget | currency }}</span
+          >
           <span>
-            <strong>Deadline</strong>
+            <strong class="mb-1 block text-[#34465b] dark:text-slate-300">Deadline</strong>
             {{ project.deadline ? (project.deadline | date: 'mediumDate') : 'Not set' }}
           </span>
-          <span><strong>Created</strong> {{ project.created_at | date: 'mediumDate' }}</span>
+          <span
+            ><strong class="mb-1 block text-[#34465b] dark:text-slate-300">Created</strong>
+            {{ project.created_at | date: 'mediumDate' }}</span
+          >
         </div>
       </article>
     }
 
     @if (user()?.role === 'client') {
-      <section class="panel" aria-labelledby="proposals-heading">
-        <div class="section-heading">
+      <section
+        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] dark:bg-slate-900 dark:border-slate-700"
+        aria-labelledby="proposals-heading"
+      >
+        <div
+          class="mb-[18px] flex items-center justify-between gap-4 max-[720px]:items-start max-[720px]:flex-col"
+        >
           <div>
-            <h2 id="proposals-heading">Freelancer proposals</h2>
-            <p>Review proposed budgets and delivery estimates.</p>
+            <h2
+              class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100"
+              id="proposals-heading"
+            >
+              Freelancer proposals
+            </h2>
+            <p class="m-0 text-[#637286] dark:text-slate-300">
+              Review proposed budgets and delivery estimates.
+            </p>
           </div>
           @if (bids.length) {
-            <span class="count-label">{{ bids.length }} proposal{{ bids.length === 1 ? '' : 's' }}</span>
+            <span class="text-[0.86rem] text-[#6a7889] dark:text-slate-400"
+              >{{ bids.length }} proposal{{ bids.length === 1 ? '' : 's' }}</span
+            >
           }
         </div>
 
         @if (bidsLoading) {
-          <div class="loading-state" role="status">Loading proposals...</div>
+          <div class="px-5 py-[38px] text-center text-[#68778a] dark:text-slate-400" role="status">
+            Loading proposals...
+          </div>
         } @else if (bids.length) {
-          <div class="proposal-list">
+          <div class="grid gap-[14px]">
             @for (bid of bids; track bid.id) {
-              <article class="proposal-card">
-                <div class="proposal-header">
+              <article
+                class="grid gap-[14px] rounded-[14px] border border-[#e2e8f0] bg-white p-[18px] shadow-[0_5px_18px_rgb(26_48_75_/_4%)] dark:bg-slate-900 dark:border-slate-700"
+              >
+                <div class="flex flex-wrap items-center justify-between gap-2.5">
                   <div>
-                    <h3>{{ bid.freelancer_name || 'Freelancer' }}</h3>
-                    <span class="detail-subtle">{{ bid.estimated_days }} day estimate</span>
+                    <h3 class="m-0 text-base font-bold text-[#1b334f] dark:text-slate-100">
+                      {{ bid.freelancer_name || 'Freelancer' }}
+                    </h3>
+                    <span class="text-[0.86rem] text-[#6a7889] dark:text-slate-400"
+                      >{{ bid.estimated_days }} day estimate</span
+                    >
                   </div>
                   <span [class]="'status-badge status-' + bid.status">{{ bid.status }}</span>
                 </div>
-                <div class="project-meta">
-                  <span><strong>Proposed</strong> {{ bid.proposed_amount | currency }}</span>
-                  <span><strong>Submitted</strong> {{ bid.created_at | date: 'mediumDate' }}</span>
+                <div
+                  class="flex flex-wrap gap-x-[18px] gap-y-2.5 text-[0.88rem] text-[#536479] dark:text-slate-300"
+                >
+                  <span
+                    ><strong class="text-[#34465b] dark:text-slate-300">Proposed</strong>
+                    {{ bid.proposed_amount | currency }}</span
+                  >
+                  <span
+                    ><strong class="text-[#34465b] dark:text-slate-300">Submitted</strong>
+                    {{ bid.created_at | date: 'mediumDate' }}</span
+                  >
                 </div>
-                <p>{{ bid.proposal }}</p>
+                <p class="m-0 whitespace-pre-wrap leading-[1.6] text-[#526174] dark:text-slate-300">
+                  {{ bid.proposal }}
+                </p>
                 @if (bid.status === 'pending' && project.status === 'open') {
-                  <div class="form-actions">
+                  <div class="mt-5 flex flex-wrap gap-2.5">
                     <button
-                      class="button button-primary"
+                      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
                       type="button"
                       [disabled]="busyBidId !== ''"
                       (click)="decideBid(bid, 'accept')"
@@ -179,7 +258,7 @@
                       {{ busyBidId === bid.id ? 'Saving...' : 'Accept proposal' }}
                     </button>
                     <button
-                      class="button button-secondary"
+                      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
                       type="button"
                       [disabled]="busyBidId !== ''"
                       (click)="decideBid(bid, 'reject')"
@@ -192,19 +271,33 @@
             }
           </div>
         } @else {
-          <div class="empty-state compact-empty">
-            <h2>No proposals yet</h2>
-            <p>Freelancer proposals will appear here when they apply.</p>
+          <div class="px-5 py-[38px] text-center text-[#68778a] pb-3 dark:text-slate-400">
+            <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100 mb-2">
+              No proposals yet
+            </h2>
+            <p class="m-0 text-[#637286] dark:text-slate-300">
+              Freelancer proposals will appear here when they apply.
+            </p>
           </div>
         }
       </section>
     } @else if (project.status === 'open' && !bidSubmitted) {
-      <section class="panel" aria-labelledby="proposal-form-heading">
-        <h2 id="proposal-form-heading">Submit a proposal</h2>
-        <p class="section-intro">Share your price, delivery estimate, and approach.</p>
+      <section
+        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] dark:bg-slate-900 dark:border-slate-700"
+        aria-labelledby="proposal-form-heading"
+      >
+        <h2
+          class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100"
+          id="proposal-form-heading"
+        >
+          Submit a proposal
+        </h2>
+        <p class="mt-[7px] mb-0 text-[#6a7889] dark:text-slate-400">
+          Share your price, delivery estimate, and approach.
+        </p>
         <form #bidForm="ngForm" (ngSubmit)="submitBid()">
-          <div class="form-grid">
-            <div class="field">
+          <div class="grid grid-cols-1 gap-[18px] min-[721px]:grid-cols-2">
+            <div class="grid min-w-0 gap-[7px]">
               <label for="proposed-amount">Proposed amount</label>
               <input
                 id="proposed-amount"
@@ -216,7 +309,7 @@
                 step="0.01"
               />
             </div>
-            <div class="field">
+            <div class="grid min-w-0 gap-[7px]">
               <label for="estimated-days">Estimated duration (days)</label>
               <input
                 id="estimated-days"
@@ -228,9 +321,10 @@
                 step="1"
               />
             </div>
-            <div class="field field-wide">
+            <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
               <label for="proposal-description">Proposal</label>
               <textarea
+                class="min-h-[130px]"
                 id="proposal-description"
                 name="proposal"
                 [(ngModel)]="proposal"
@@ -240,9 +334,9 @@
               ></textarea>
             </div>
           </div>
-          <div class="form-actions">
+          <div class="mt-5 flex flex-wrap gap-2.5">
             <button
-              class="button button-primary"
+              class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
               type="submit"
               [disabled]="isSaving || bidForm.invalid"
             >
@@ -252,13 +346,14 @@
         </form>
       </section>
     } @else if (bidSubmitted) {
-      <p class="detail-subtle">
+      <p class="text-[0.86rem] text-[#6a7889] dark:text-slate-400">
         You can track this proposal in <a routerLink="/bids">My proposals</a>.
       </p>
     }
 
     @if (canShowWorkspace && project && user(); as currentUser) {
       <app-project-workspace
+        class="grid gap-6"
         [projectId]="project.id"
         [projectStatus]="project.status"
         [role]="currentUser.role"

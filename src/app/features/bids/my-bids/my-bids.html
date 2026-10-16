@@ -1,49 +1,85 @@
-<section class="page-shell">
-  <div class="page-heading">
+<section class="grid gap-6">
+  <div class="flex items-start justify-between gap-5 max-[720px]:flex-col">
     <div>
-      <h1>My proposals</h1>
-      <p>Track proposal decisions and withdraw pending bids on open projects.</p>
+      <h1
+        class="m-0 text-[clamp(1.7rem,3vw,2.15rem)] font-bold tracking-[-0.035em] text-[#172d46] dark:text-slate-100"
+      >
+        My proposals
+      </h1>
+      <p class="mt-2 mb-0 text-[#657487] dark:text-slate-400">
+        Track proposal decisions and withdraw pending bids on open projects.
+      </p>
     </div>
   </div>
 
   @if (errorMessage) {
-    <p class="notice notice-error" role="alert">{{ errorMessage }}</p>
+    <p
+      class="rounded-lg px-[14px] py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
+      role="alert"
+    >
+      {{ errorMessage }}
+    </p>
   }
   @if (successMessage) {
-    <p class="notice notice-success" role="status">{{ successMessage }}</p>
+    <p
+      class="rounded-lg px-[14px] py-3 leading-normal border border-[#bfe2ca] bg-[#effaf2] text-[#23643b] dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300"
+      role="status"
+    >
+      {{ successMessage }}
+    </p>
   }
 
   @if (isLoading) {
-    <div class="panel loading-state" role="status">Loading proposals...</div>
+    <div
+      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] px-5 py-[38px] text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
+      role="status"
+    >
+      Loading proposals...
+    </div>
   } @else if (bids.length) {
-    <div class="proposal-list">
+    <div class="grid gap-[14px]">
       @for (bid of bids; track bid.id) {
-        <article class="proposal-card">
-          <div class="proposal-header">
+        <article
+          class="grid gap-[14px] rounded-[14px] border border-[#e2e8f0] bg-white p-[18px] shadow-[0_5px_18px_rgb(26_48_75_/_4%)] dark:bg-slate-900 dark:border-slate-700"
+        >
+          <div class="flex flex-wrap items-center justify-between gap-2.5">
             <div>
-              <h2>
+              <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100">
                 @if (isProjectVisible(bid)) {
                   <a [routerLink]="['/projects', bid.project_id]">{{ bid.project_title }}</a>
                 } @else {
                   {{ bid.project_title }}
                 }
               </h2>
-              <span class="detail-subtle">
+              <span class="text-[0.86rem] text-[#6a7889] dark:text-slate-400">
                 Submitted {{ bid.created_at | date: 'mediumDate' }}
               </span>
             </div>
             <span [class]="'status-badge status-' + bid.status">{{ bid.status }}</span>
           </div>
-          <div class="project-meta">
-            <span><strong>Proposed</strong> {{ bid.proposed_amount | currency }}</span>
-            <span><strong>Estimated duration</strong> {{ bid.estimated_days }} days</span>
-            <span><strong>Project status</strong> {{ bid.project_status?.replace('_', ' ') }}</span>
+          <div
+            class="flex flex-wrap gap-x-[18px] gap-y-2.5 text-[0.88rem] text-[#536479] dark:text-slate-300"
+          >
+            <span
+              ><strong class="text-[#34465b] dark:text-slate-300">Proposed</strong>
+              {{ bid.proposed_amount | currency }}</span
+            >
+            <span
+              ><strong class="text-[#34465b] dark:text-slate-300">Estimated duration</strong>
+              {{ bid.estimated_days }} days</span
+            >
+            <span
+              ><strong class="text-[#34465b] dark:text-slate-300">Project status</strong>
+              {{ bid.project_status?.replace('_', ' ') }}</span
+            >
           </div>
-          <p>{{ bid.proposal }}</p>
+          <p class="m-0 whitespace-pre-wrap leading-[1.6] text-[#526174] dark:text-slate-300">
+            {{ bid.proposal }}
+          </p>
           @if (bid.status === 'pending' && bid.project_status === 'open') {
-            <div class="form-actions">
+            <div class="mt-5 flex flex-wrap gap-2.5">
               <button
-                class="button button-danger"
+                class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#f0c5c1] bg-white text-[#a32d28] hover:enabled:bg-[#fff4f2] dark:bg-slate-900 dark:border-red-800"
                 type="button"
                 [disabled]="busyBidId !== ''"
                 (click)="withdraw(bid)"
@@ -56,9 +92,12 @@
       }
     </div>
 
-    <nav class="pagination" aria-label="Proposal result pages">
+    <nav
+      class="flex flex-wrap items-center justify-center gap-4 text-[#607085] dark:text-slate-400"
+      aria-label="Proposal result pages"
+    >
       <button
-        class="button button-secondary"
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
         type="button"
         (click)="previousPage()"
         [disabled]="offset === 0 || isLoading"
@@ -67,7 +106,7 @@
       </button>
       <span>Page {{ pageNumber }} of {{ pageCount }}</span>
       <button
-        class="button button-secondary"
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
         type="button"
         (click)="nextPage()"
         [disabled]="offset + limit >= total || isLoading"
@@ -76,10 +115,20 @@
       </button>
     </nav>
   } @else if (!errorMessage) {
-    <div class="panel empty-state">
-      <h2>No proposals yet</h2>
-      <p>Browse open projects and submit a proposal to track it here.</p>
-      <a class="button button-primary" routerLink="/projects">Discover projects</a>
+    <div
+      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] px-5 py-[38px] text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
+    >
+      <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100 mb-2">
+        No proposals yet
+      </h2>
+      <p class="m-0 text-[#637286] dark:text-slate-300">
+        Browse open projects and submit a proposal to track it here.
+      </p>
+      <a
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+        routerLink="/projects"
+        >Discover projects</a
+      >
     </div>
   }
 </section>

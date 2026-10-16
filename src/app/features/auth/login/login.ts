@@ -9,7 +9,6 @@ import { Router, RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.html',
-  styleUrl: './login.css',
 })
 export class LoginComponent {
   private readonly authService = inject(AuthService);

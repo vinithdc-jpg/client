@@ -9,7 +9,6 @@ import type { UserRole } from '../../../../core/services/auth.service';
   standalone: true,
   imports: [FormsModule, RouterLink],
   templateUrl: './register.html',
-  styleUrl: './register.css',
 })
 export class RegisterComponent {
   private readonly authService = inject(AuthService);

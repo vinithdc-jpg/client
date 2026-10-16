@@ -10,7 +10,6 @@ import { apiErrorMessage } from '../../../../core/utils/api-error-message';
   standalone: true,
   imports: [CurrencyPipe, DatePipe, RouterLink],
   templateUrl: './my-bids.html',
-  styleUrl: './my-bids.css',
 })
 export class MyBidsComponent implements OnInit {
   private readonly projectService = inject(ProjectService);

@@ -15,7 +15,6 @@ import { apiErrorMessage } from '../../../../core/utils/api-error-message';
   standalone: true,
   imports: [CurrencyPipe, DatePipe, FormsModule, RouterLink],
   templateUrl: './project-list.html',
-  styleUrl: './project-list.css',
 })
 export class ProjectListComponent implements OnInit {
   private readonly projectService = inject(ProjectService);
