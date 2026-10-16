@@ -11,6 +11,15 @@
     {{ isLoading ? 'Signing in...' : 'Sign in' }}
   </button>
 
-  <p *ngIf="errorMessage">{{ errorMessage }}</p>
-  <p *ngIf="successMessage">{{ successMessage }}</p>
+  @if (errorMessage) {
+    <p class="error-message" role="alert">
+      {{ errorMessage }}
+    </p>
+  }
+
+  @if (successMessage) {
+    <p class="success-message" role="status">
+      {{ successMessage }}
+    </p>
+  }
 </form>

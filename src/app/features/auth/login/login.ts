@@ -37,16 +37,38 @@ export class LoginComponent {
       })
       .subscribe({
         next: (response) => {
+          sessionStorage.setItem('auth_token', response.token);
+          sessionStorage.setItem('auth_user', JSON.stringify(response.user));
+
           this.successMessage = response.message;
           this.isLoading = false;
-
-          // Token storage and navigation will be added
-          // in a later step.
         },
-        error: (error) => {
-          this.errorMessage = error.error?.message ?? 'Unable to log in. Please try again.';
+
+        error: (error: unknown) => {
+          this.errorMessage = this.getLoginErrorMessage(error);
+
+          this.successMessage = '';
           this.isLoading = false;
         },
       });
+  }
+
+  private getLoginErrorMessage(error: unknown): string {
+    const responseBody =
+      typeof error === 'object' && error !== null && 'error' in error
+        ? error.error
+        : error;
+
+    if (
+      typeof responseBody === 'object' &&
+      responseBody !== null &&
+      'message' in responseBody &&
+      typeof responseBody.message === 'string' &&
+      responseBody.message.trim()
+    ) {
+      return responseBody.message.trim();
+    }
+
+    return 'Unable to sign in. Please try again.';
   }
 }
