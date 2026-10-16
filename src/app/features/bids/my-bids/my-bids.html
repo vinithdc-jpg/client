@@ -1,0 +1,85 @@
+<section class="page-shell">
+  <div class="page-heading">
+    <div>
+      <h1>My proposals</h1>
+      <p>Track proposal decisions and withdraw pending bids on open projects.</p>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <p class="notice notice-error" role="alert">{{ errorMessage }}</p>
+  }
+  @if (successMessage) {
+    <p class="notice notice-success" role="status">{{ successMessage }}</p>
+  }
+
+  @if (isLoading) {
+    <div class="panel loading-state" role="status">Loading proposals...</div>
+  } @else if (bids.length) {
+    <div class="proposal-list">
+      @for (bid of bids; track bid.id) {
+        <article class="proposal-card">
+          <div class="proposal-header">
+            <div>
+              <h2>
+                @if (isProjectVisible(bid)) {
+                  <a [routerLink]="['/projects', bid.project_id]">{{ bid.project_title }}</a>
+                } @else {
+                  {{ bid.project_title }}
+                }
+              </h2>
+              <span class="detail-subtle">
+                Submitted {{ bid.created_at | date: 'mediumDate' }}
+              </span>
+            </div>
+            <span [class]="'status-badge status-' + bid.status">{{ bid.status }}</span>
+          </div>
+          <div class="project-meta">
+            <span><strong>Proposed</strong> {{ bid.proposed_amount | currency }}</span>
+            <span><strong>Estimated duration</strong> {{ bid.estimated_days }} days</span>
+            <span><strong>Project status</strong> {{ bid.project_status?.replace('_', ' ') }}</span>
+          </div>
+          <p>{{ bid.proposal }}</p>
+          @if (bid.status === 'pending' && bid.project_status === 'open') {
+            <div class="form-actions">
+              <button
+                class="button button-danger"
+                type="button"
+                [disabled]="busyBidId !== ''"
+                (click)="withdraw(bid)"
+              >
+                {{ busyBidId === bid.id ? 'Withdrawing...' : 'Withdraw proposal' }}
+              </button>
+            </div>
+          }
+        </article>
+      }
+    </div>
+
+    <nav class="pagination" aria-label="Proposal result pages">
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="previousPage()"
+        [disabled]="offset === 0 || isLoading"
+      >
+        Previous
+      </button>
+      <span>Page {{ pageNumber }} of {{ pageCount }}</span>
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="nextPage()"
+        [disabled]="offset + limit >= total || isLoading"
+      >
+        Next
+      </button>
+    </nav>
+  } @else if (!errorMessage) {
+    <div class="panel empty-state">
+      <h2>No proposals yet</h2>
+      <p>Browse open projects and submit a proposal to track it here.</p>
+      <a class="button button-primary" routerLink="/projects">Discover projects</a>
+    </div>
+  }
+</section>

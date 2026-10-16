@@ -1,38 +1,42 @@
-<h2>Create your DevCollab account</h2>
+<section class="auth-card" aria-labelledby="register-heading">
+  <h1 id="register-heading">Create your DevCollab account</h1>
 
-<form #registerForm="ngForm" (ngSubmit)="onSubmit()">
-  <label for="name">Full name</label>
-  <input id="name" name="name" type="text" [(ngModel)]="name" required maxlength="100" />
+  <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+    <label for="name">Full name</label>
+    <input id="name" name="name" type="text" [(ngModel)]="name" required maxlength="100" />
 
-  <label for="email">Email</label>
-  <input id="email" name="email" type="email" [(ngModel)]="email" required email />
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" [(ngModel)]="email" required email />
 
-  <label for="password">Password</label>
-  <input
-    id="password"
-    name="password"
-    type="password"
-    [(ngModel)]="password"
-    required
-    minlength="8"
-    maxlength="72"
-  />
+    <label for="password">Password</label>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      [(ngModel)]="password"
+      required
+      minlength="8"
+      maxlength="72"
+    />
 
-  <label for="role">Account type</label>
-  <select id="role" name="role" [(ngModel)]="role" required>
-    <option value="freelancer">Freelancer</option>
-    <option value="client">Client</option>
-  </select>
+    <label for="role">Account type</label>
+    <select id="role" name="role" [(ngModel)]="role" required>
+      <option value="freelancer">Freelancer</option>
+      <option value="client">Client</option>
+    </select>
 
-  <button type="submit" [disabled]="isLoading || registerForm.invalid">
-    {{ isLoading ? 'Creating account...' : 'Create account' }}
-  </button>
+    <button class="button button-primary" type="submit" [disabled]="isLoading || registerForm.invalid">
+      {{ isLoading ? 'Creating account...' : 'Create account' }}
+    </button>
 
-  @if (errorMessage) {
-    <p role="alert">{{ errorMessage }}</p>
-  }
+    @if (errorMessage) {
+      <p class="notice notice-error" role="alert">{{ errorMessage }}</p>
+    }
 
-  @if (successMessage) {
-    <p role="status">{{ successMessage }}</p>
-  }
-</form>
+    @if (successMessage) {
+      <p class="notice notice-success" role="status">{{ successMessage }}</p>
+    }
+  </form>
+
+  <p>Already registered? <a routerLink="/login">Sign in</a></p>
+</section>

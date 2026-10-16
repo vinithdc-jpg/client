@@ -1,17 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import type { UserRole } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class RegisterComponent {
   private readonly authService = inject(AuthService);
+  private readonly changeDetector = inject(ChangeDetectorRef);
 
   name = '';
   email = '';
@@ -50,10 +52,12 @@ export class RegisterComponent {
           this.successMessage = response.message;
           this.password = '';
           this.isLoading = false;
+          this.changeDetector.markForCheck();
         },
         error: (error) => {
           this.errorMessage = error.error?.message ?? 'Registration failed. Please try again.';
           this.isLoading = false;
+          this.changeDetector.markForCheck();
         },
       });
   }

@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
+import { signal } from '@angular/core';
 import { of } from 'rxjs';
 import { AuthService } from '../core/services/auth.service';
 import { App } from './app';
@@ -11,7 +12,14 @@ describe('App', () => {
       imports: [App],
       providers: [
         provideRouter(routes),
-        { provide: AuthService, useValue: { login: () => of({}) } },
+        {
+          provide: AuthService,
+          useValue: {
+            currentUser: signal(null),
+            login: () => of({}),
+            logout: () => undefined,
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -29,6 +37,6 @@ describe('App', () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h2')?.textContent).toContain('Sign in to DevCollab');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Sign in to DevCollab');
   });
 });

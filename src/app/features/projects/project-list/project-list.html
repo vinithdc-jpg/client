@@ -1,0 +1,106 @@
+<section class="page-shell">
+  <div class="page-heading">
+    <div>
+      <h1>{{ user()?.role === 'client' ? 'Your projects' : 'Discover projects' }}</h1>
+      <p>
+        {{ user()?.role === 'client'
+          ? 'Manage your projects and review freelancer proposals.'
+          : 'Find open work that matches your skills and submit a proposal.' }}
+      </p>
+    </div>
+    @if (user()?.role === 'client') {
+      <a class="button button-primary" routerLink="/projects/new">Create a project</a>
+    }
+  </div>
+
+  <form class="panel filter-row" (ngSubmit)="applyFilters()">
+    <div class="field filter-search">
+      <label for="project-search">Search projects</label>
+      <input
+        id="project-search"
+        name="search"
+        type="search"
+        placeholder="Search titles and descriptions"
+        [(ngModel)]="search"
+      />
+    </div>
+    <div class="field filter-status">
+      <label for="project-status">Status</label>
+      <select id="project-status" name="status" [(ngModel)]="status">
+        <option value="">All visible statuses</option>
+        <option value="open">Open</option>
+        <option value="in_progress">In progress</option>
+        <option value="completed">Completed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+    <button class="button button-secondary" type="submit" [disabled]="isLoading">
+      Apply filters
+    </button>
+  </form>
+
+  @if (errorMessage) {
+    <p class="notice notice-error" role="alert">{{ errorMessage }}</p>
+  }
+
+  @if (isLoading) {
+    <div class="panel loading-state" role="status">Loading projects...</div>
+  } @else if (projects.length > 0) {
+    <div class="project-grid">
+      @for (project of projects; track project.id) {
+        <a class="project-card" [routerLink]="['/projects', project.id]">
+          <div class="proposal-header">
+            <h2>{{ project.title }}</h2>
+            <span [class]="'status-badge status-' + project.status">
+              {{ project.status.replace('_', ' ') }}
+            </span>
+          </div>
+          <p class="project-card-description">{{ project.description }}</p>
+          <div class="project-meta">
+            <span>Budget: {{ project.budget | currency }}</span>
+            @if (project.deadline) {
+              <span>Due {{ project.deadline | date: 'mediumDate' }}</span>
+            } @else {
+              <span>No deadline set</span>
+            }
+          </div>
+          @if (user()?.role === 'freelancer' && project.client_name) {
+            <small>Posted by {{ project.client_name }}</small>
+          }
+        </a>
+      }
+    </div>
+
+    <nav class="pagination" aria-label="Project result pages">
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="previousPage()"
+        [disabled]="offset === 0 || isLoading"
+      >
+        Previous
+      </button>
+      <span>Page {{ pageNumber }} of {{ pageCount }}</span>
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="nextPage()"
+        [disabled]="offset + limit >= total || isLoading"
+      >
+        Next
+      </button>
+    </nav>
+  } @else if (!errorMessage) {
+    <div class="panel empty-state">
+      <h2>No projects found</h2>
+      <p>
+        {{ user()?.role === 'client'
+          ? 'Create a project to start receiving proposals.'
+          : 'Try adjusting your filters, or check back for new opportunities.' }}
+      </p>
+      @if (user()?.role === 'client') {
+        <a class="button button-primary" routerLink="/projects/new">Create a project</a>
+      }
+    </div>
+  }
+</section>

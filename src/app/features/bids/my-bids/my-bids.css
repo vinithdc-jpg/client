@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.proposal-card h2 {
+  margin: 0 0 5px;
+  color: #1b334f;
+  font-size: 1.02rem;
+}
+
+.proposal-card p {
+  margin: 0;
+  color: #526174;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.detail-subtle {
+  color: #6a7889;
+  font-size: 0.85rem;
+}
+
+.project-meta strong {
+  color: #34465b;
+}

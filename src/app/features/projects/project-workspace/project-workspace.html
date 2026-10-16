@@ -1,0 +1,669 @@
+<section class="workspace-section" aria-labelledby="milestones-heading">
+  <div class="section-heading">
+    <div>
+      <h2 id="milestones-heading">Milestones</h2>
+      <p>Plan deliverables, track submissions, and review completed work.</p>
+    </div>
+    @if (progress.total > 0) {
+      <div class="progress-summary">
+        <span>{{ milestoneProgressLabel }}</span>
+        <strong>{{ progress.percentage }}%</strong>
+        <progress
+          [value]="progress.percentage"
+          max="100"
+          [attr.aria-label]="milestoneProgressLabel"
+        ></progress>
+      </div>
+    }
+  </div>
+
+  @if (isLoadingMilestones) {
+    <div class="loading-state" role="status">Loading milestones...</div>
+  } @else if (milestones.length) {
+    <div class="milestone-list">
+      @for (milestone of milestones; track milestone.id; let index = $index) {
+        <article class="milestone-card">
+          <div class="milestone-topline">
+            <div class="milestone-title">
+              <span class="position-label">Milestone {{ index + 1 }}</span>
+              <h3>{{ milestone.title }}</h3>
+            </div>
+            <span [class]="'status-badge status-' + milestone.status">
+              {{ milestone.status.replace('_', ' ') }}
+            </span>
+          </div>
+
+          @if (editingMilestoneId === milestone.id) {
+            <form class="compact-form" (ngSubmit)="saveMilestone(milestone)">
+              <div class="form-grid">
+                <div class="field field-wide">
+                  <label [for]="'edit-milestone-title-' + milestone.id">Title</label>
+                  <input
+                    [id]="'edit-milestone-title-' + milestone.id"
+                    name="editMilestoneTitle"
+                    [(ngModel)]="editMilestoneTitle"
+                    required
+                    maxlength="150"
+                  />
+                </div>
+                <div class="field field-wide">
+                  <label [for]="'edit-milestone-description-' + milestone.id">Description</label>
+                  <textarea
+                    [id]="'edit-milestone-description-' + milestone.id"
+                    name="editMilestoneDescription"
+                    [(ngModel)]="editMilestoneDescription"
+                    maxlength="20000"
+                    rows="3"
+                  ></textarea>
+                </div>
+                <div class="field">
+                  <label [for]="'edit-milestone-amount-' + milestone.id">Amount</label>
+                  <input
+                    [id]="'edit-milestone-amount-' + milestone.id"
+                    name="editMilestoneAmount"
+                    type="number"
+                    [(ngModel)]="editMilestoneAmount"
+                    min="0"
+                    step="0.01"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label [for]="'edit-milestone-date-' + milestone.id">Due date</label>
+                  <input
+                    [id]="'edit-milestone-date-' + milestone.id"
+                    name="editMilestoneDueDate"
+                    type="date"
+                    [(ngModel)]="editMilestoneDueDate"
+                  />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="button button-primary" type="submit" [disabled]="isSaving">
+                  Save milestone
+                </button>
+                <button
+                  class="button button-secondary"
+                  type="button"
+                  (click)="cancelMilestoneEdit()"
+                  [disabled]="isSaving"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          } @else {
+            @if (milestone.description) {
+              <p class="milestone-description">{{ milestone.description }}</p>
+            }
+            <div class="project-meta milestone-meta">
+              <span><strong>Amount</strong> {{ milestone.amount | currency }}</span>
+              <span>
+                <strong>Due</strong>
+                {{ milestone.due_date ? (milestone.due_date | date: 'mediumDate') : 'Not set' }}
+              </span>
+            </div>
+            @if (milestone.latest_submission) {
+              <div class="submission-note">
+                <strong>Latest submission</strong>
+                <p>{{ milestone.latest_submission }}</p>
+              </div>
+            }
+          }
+
+          <div class="workspace-actions">
+            @if (canManage) {
+              @if (milestone.status === 'pending' || milestone.status === 'in_progress') {
+                <button
+                  class="button button-secondary"
+                  type="button"
+                  (click)="beginMilestoneEdit(milestone)"
+                  [disabled]="isSaving"
+                >
+                  Edit
+                </button>
+              }
+              <button
+                class="button button-quiet"
+                type="button"
+                (click)="moveMilestone(index, -1)"
+                [disabled]="index === 0 || isSaving"
+                [attr.aria-label]="'Move ' + milestone.title + ' earlier'"
+              >
+                Move up
+              </button>
+              <button
+                class="button button-quiet"
+                type="button"
+                (click)="moveMilestone(index, 1)"
+                [disabled]="index === milestones.length - 1 || isSaving"
+                [attr.aria-label]="'Move ' + milestone.title + ' later'"
+              >
+                Move down
+              </button>
+            }
+            @if (role === 'freelancer' && isActiveProject && milestone.status === 'pending') {
+              <button
+                class="button button-primary"
+                type="button"
+                (click)="startMilestone(milestone)"
+                [disabled]="isSaving"
+              >
+                Start milestone
+              </button>
+            }
+          </div>
+
+          @if (role === 'freelancer' && isActiveProject && milestone.status === 'in_progress') {
+            <div class="milestone-workflow">
+              <label [for]="'submission-' + milestone.id">Submission note</label>
+              <textarea
+                [id]="'submission-' + milestone.id"
+                [name]="'submission-' + milestone.id"
+                [(ngModel)]="submissionDrafts[milestone.id]"
+                maxlength="10000"
+                rows="3"
+                placeholder="Describe the completed deliverable."
+              ></textarea>
+              <button
+                class="button button-primary"
+                type="button"
+                (click)="submitMilestone(milestone)"
+                [disabled]="isSaving"
+              >
+                Submit for review
+              </button>
+            </div>
+          }
+
+          @if (role === 'client' && isActiveProject && milestone.status === 'submitted') {
+            <div class="milestone-workflow">
+              <label [for]="'feedback-' + milestone.id">Review feedback (optional)</label>
+              <textarea
+                [id]="'feedback-' + milestone.id"
+                [name]="'feedback-' + milestone.id"
+                [(ngModel)]="reviewFeedback[milestone.id]"
+                maxlength="5000"
+                rows="2"
+                placeholder="Add feedback if changes are needed."
+              ></textarea>
+              <div class="workspace-actions">
+                <button
+                  class="button button-primary"
+                  type="button"
+                  (click)="reviewMilestone(milestone, 'approve')"
+                  [disabled]="isSaving"
+                >
+                  Approve
+                </button>
+                <button
+                  class="button button-secondary"
+                  type="button"
+                  (click)="reviewMilestone(milestone, 'request_changes')"
+                  [disabled]="isSaving"
+                >
+                  Request changes
+                </button>
+              </div>
+            </div>
+          }
+        </article>
+      }
+    </div>
+  } @else {
+    <div class="empty-state compact-empty">
+      <h3>No milestones yet</h3>
+      <p>The project client can add milestones to outline the deliverables.</p>
+    </div>
+  }
+
+  @if (canManage) {
+    <form class="panel compact-form" (ngSubmit)="createMilestone()">
+      <h3>Add a milestone</h3>
+      <div class="form-grid">
+        <div class="field field-wide">
+          <label for="new-milestone-title">Title</label>
+          <input
+            id="new-milestone-title"
+            name="milestoneTitle"
+            [(ngModel)]="milestoneTitle"
+            required
+            maxlength="150"
+          />
+        </div>
+        <div class="field field-wide">
+          <label for="new-milestone-description">Description (optional)</label>
+          <textarea
+            id="new-milestone-description"
+            name="milestoneDescription"
+            [(ngModel)]="milestoneDescription"
+            maxlength="20000"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="field">
+          <label for="new-milestone-amount">Amount</label>
+          <input
+            id="new-milestone-amount"
+            name="milestoneAmount"
+            type="number"
+            [(ngModel)]="milestoneAmount"
+            required
+            min="0"
+            step="0.01"
+          />
+        </div>
+        <div class="field">
+          <label for="new-milestone-date">Due date (optional)</label>
+          <input
+            id="new-milestone-date"
+            name="milestoneDueDate"
+            type="date"
+            [(ngModel)]="milestoneDueDate"
+          />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button
+          class="button button-primary"
+          type="submit"
+          [disabled]="isCreatingMilestone"
+        >
+          {{ isCreatingMilestone ? 'Adding...' : 'Add milestone' }}
+        </button>
+      </div>
+    </form>
+  }
+</section>
+
+<section class="workspace-section" aria-labelledby="tasks-heading">
+  <div class="section-heading">
+    <div>
+      <h2 id="tasks-heading">Task board</h2>
+      <p>Move work through to-do, in progress, review, and completed.</p>
+    </div>
+    @if (isLoadingTasks) {
+      <span class="detail-subtle" role="status">Loading tasks...</span>
+    }
+  </div>
+
+  @if (canManage) {
+    <form class="panel compact-form" (ngSubmit)="createTask()">
+      <h3>Add a task</h3>
+      <div class="form-grid">
+        <div class="field field-wide">
+          <label for="new-task-title">Title</label>
+          <input
+            id="new-task-title"
+            name="taskTitle"
+            [(ngModel)]="taskTitle"
+            required
+            maxlength="150"
+          />
+        </div>
+        <div class="field field-wide">
+          <label for="new-task-description">Description (optional)</label>
+          <textarea
+            id="new-task-description"
+            name="taskDescription"
+            [(ngModel)]="taskDescription"
+            maxlength="20000"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="field">
+          <label for="new-task-priority">Priority</label>
+          <select id="new-task-priority" name="taskPriority" [(ngModel)]="taskPriority">
+            @for (priority of priorities; track priority) {
+              <option [value]="priority">{{ priority }}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label for="new-task-date">Due date (optional)</label>
+          <input
+            id="new-task-date"
+            name="taskDueDate"
+            type="date"
+            [(ngModel)]="taskDueDate"
+          />
+        </div>
+        <div class="field">
+          <label for="new-task-milestone">Milestone (optional)</label>
+          <select
+            id="new-task-milestone"
+            name="taskMilestoneId"
+            [(ngModel)]="taskMilestoneId"
+          >
+            <option value="">No milestone</option>
+            @for (milestone of milestones; track milestone.id) {
+              <option [value]="milestone.id">{{ milestone.title }}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label for="new-task-assignee">Assignee (optional)</label>
+          <select
+            id="new-task-assignee"
+            name="taskAssigneeId"
+            [(ngModel)]="taskAssigneeId"
+          >
+            <option value="">Unassigned</option>
+            @if (assignedFreelancerId) {
+              <option [value]="assignedFreelancerId">
+                {{ assignedFreelancerName || 'Accepted freelancer' }}
+              </option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="button button-primary" type="submit" [disabled]="isCreatingTask">
+          {{ isCreatingTask ? 'Adding...' : 'Add task' }}
+        </button>
+      </div>
+    </form>
+  }
+
+  @if (!isLoadingTasks && !tasks.length) {
+    <div class="empty-state compact-empty">
+      <h3>No tasks yet</h3>
+      <p>Tasks created for this project will appear in the board.</p>
+    </div>
+  } @else {
+    <div class="kanban-board" aria-label="Project Kanban board">
+      @for (status of statuses; track status) {
+        <section
+          class="kanban-column"
+          [attr.aria-label]="taskStatusLabel(status) + ' tasks'"
+          (dragover)="allowTaskDrop($event)"
+          (drop)="dropTask($event, status, tasksIn(status).length)"
+        >
+          <header class="kanban-column-heading">
+            <h3>{{ taskStatusLabel(status) }}</h3>
+            <span class="count-label">{{ tasksIn(status).length }}</span>
+          </header>
+          <div class="kanban-card-list">
+            @for (task of tasksIn(status); track task.id; let index = $index) {
+              <article
+                class="task-card"
+                [class.task-card-draggable]="canDragTask(task)"
+                [attr.draggable]="canDragTask(task) && !isSaving"
+                (dragstart)="startTaskDrag($event, task)"
+                (dragover)="allowTaskDrop($event)"
+                (drop)="dropTask($event, status, index)"
+              >
+                <div class="task-card-heading">
+                  <h4>{{ task.title }}</h4>
+                  <span [class]="'priority-badge priority-' + task.priority">
+                    {{ task.priority }}
+                  </span>
+                </div>
+                @if (editingTaskId === task.id) {
+                  <form class="task-edit-form" (ngSubmit)="saveTask(task)">
+                    <label [for]="'edit-task-title-' + task.id">Title</label>
+                    <input
+                      [id]="'edit-task-title-' + task.id"
+                      [name]="'edit-task-title-' + task.id"
+                      [(ngModel)]="editTaskTitle"
+                      required
+                      maxlength="150"
+                    />
+                    <label [for]="'edit-task-description-' + task.id">Description</label>
+                    <textarea
+                      [id]="'edit-task-description-' + task.id"
+                      [name]="'edit-task-description-' + task.id"
+                      [(ngModel)]="editTaskDescription"
+                      maxlength="20000"
+                      rows="3"
+                    ></textarea>
+                    <label [for]="'edit-task-priority-' + task.id">Priority</label>
+                    <select
+                      [id]="'edit-task-priority-' + task.id"
+                      [name]="'edit-task-priority-' + task.id"
+                      [(ngModel)]="editTaskPriority"
+                    >
+                      @for (priority of priorities; track priority) {
+                        <option [value]="priority">{{ priority }}</option>
+                      }
+                    </select>
+                    <label [for]="'edit-task-date-' + task.id">Due date</label>
+                    <input
+                      [id]="'edit-task-date-' + task.id"
+                      [name]="'edit-task-date-' + task.id"
+                      type="date"
+                      [(ngModel)]="editTaskDueDate"
+                    />
+                    <label [for]="'edit-task-milestone-' + task.id">Milestone</label>
+                    <select
+                      [id]="'edit-task-milestone-' + task.id"
+                      [name]="'edit-task-milestone-' + task.id"
+                      [(ngModel)]="editTaskMilestoneId"
+                    >
+                      <option value="">No milestone</option>
+                      @for (milestone of milestones; track milestone.id) {
+                        <option [value]="milestone.id">{{ milestone.title }}</option>
+                      }
+                    </select>
+                    <label [for]="'edit-task-assignee-' + task.id">Assignee</label>
+                    <select
+                      [id]="'edit-task-assignee-' + task.id"
+                      [name]="'edit-task-assignee-' + task.id"
+                      [(ngModel)]="editTaskAssigneeId"
+                    >
+                      <option value="">Unassigned</option>
+                      @if (assignedFreelancerId) {
+                        <option [value]="assignedFreelancerId">
+                          {{ assignedFreelancerName || 'Accepted freelancer' }}
+                        </option>
+                      }
+                    </select>
+                    <div class="comment-actions">
+                      <button class="button button-primary" type="submit" [disabled]="isSaving">
+                        Save task
+                      </button>
+                      <button
+                        class="button button-secondary"
+                        type="button"
+                        (click)="cancelTaskEdit()"
+                        [disabled]="isSaving"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                } @else {
+                  @if (task.description) {
+                    <p class="task-description">{{ task.description }}</p>
+                  }
+                  <div class="task-meta">
+                    @if (task.assignee_name) {
+                      <span>{{ task.assignee_name }}</span>
+                    } @else {
+                      <span>Unassigned</span>
+                    }
+                    @if (task.due_date) {
+                      <span>Due {{ task.due_date | date: 'mediumDate' }}</span>
+                    }
+                  </div>
+                  @if (task.milestone_title) {
+                    <span class="task-milestone">{{ task.milestone_title }}</span>
+                  }
+                  <div class="task-move-actions">
+                    @if (canManage) {
+                      <button
+                        class="button button-quiet"
+                        type="button"
+                        (click)="beginTaskEdit(task)"
+                      >
+                        Edit
+                      </button>
+                    }
+                    @for (target of taskMoveOptions(task); track target) {
+                      <button
+                        class="button button-quiet"
+                        type="button"
+                        (click)="moveTask(task, target, tasksIn(target).length)"
+                        [disabled]="isSaving"
+                      >
+                        {{ taskTransitionLabel(task, target) }}
+                      </button>
+                    }
+                    @if (canDragTask(task) && tasksIn(status).length > 1) {
+                      <button
+                        class="button button-quiet reorder-button"
+                        type="button"
+                        (click)="moveTask(task, status, index - 1)"
+                        [disabled]="index === 0 || isSaving"
+                        [attr.aria-label]="'Move ' + task.title + ' earlier'"
+                      >
+                        ↑
+                      </button>
+                      <button
+                        class="button button-quiet reorder-button"
+                        type="button"
+                        (click)="moveTask(task, status, index + 1)"
+                        [disabled]="index === tasksIn(status).length - 1 || isSaving"
+                        [attr.aria-label]="'Move ' + task.title + ' later'"
+                      >
+                        ↓
+                      </button>
+                    }
+                  </div>
+                  <button
+                    class="comments-toggle"
+                    type="button"
+                    (click)="toggleComments(task)"
+                    [attr.aria-expanded]="activeTaskCommentsId === task.id"
+                  >
+                    {{ activeTaskCommentsId === task.id ? 'Hide' : 'Show' }}
+                    comments ({{ task.comment_count ?? 0 }})
+                  </button>
+                  @if (activeTaskCommentsId === task.id) {
+                    <div class="task-comments">
+                      @if (loadingCommentsTaskId === task.id) {
+                        <p class="detail-subtle" role="status">Loading comments...</p>
+                      }
+                      @for (comment of commentsByTask[task.id] ?? []; track comment.id) {
+                        <article class="comment-card">
+                          <div class="comment-heading">
+                            <strong>{{ comment.author_name }}</strong>
+                            <time [attr.datetime]="comment.created_at">
+                              {{ comment.created_at | date: 'short' }}
+                            </time>
+                          </div>
+                          @if (editingCommentId === comment.id) {
+                            <textarea
+                              [name]="'edit-comment-' + comment.id"
+                              [(ngModel)]="editedCommentContent"
+                              maxlength="5000"
+                              rows="3"
+                            ></textarea>
+                            <div class="comment-actions">
+                              <button
+                                class="button button-quiet"
+                                type="button"
+                                (click)="saveComment(comment)"
+                                [disabled]="commentBusyId !== ''"
+                              >
+                                Save
+                              </button>
+                              <button
+                                class="button button-quiet"
+                                type="button"
+                                (click)="cancelCommentEdit()"
+                                [disabled]="commentBusyId !== ''"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          } @else {
+                            <p>{{ comment.content }}</p>
+                            <div class="comment-actions">
+                              @if (canEditComment(comment)) {
+                                <button
+                                  class="button button-quiet"
+                                  type="button"
+                                  (click)="beginCommentEdit(comment)"
+                                >
+                                  Edit
+                                </button>
+                              }
+                              @if (canDeleteComment(comment)) {
+                                <button
+                                  class="button button-quiet"
+                                  type="button"
+                                  (click)="deleteComment(comment)"
+                                  [disabled]="commentBusyId !== ''"
+                                >
+                                  Delete
+                                </button>
+                              }
+                            </div>
+                          }
+                        </article>
+                      }
+                      <form class="comment-form" (ngSubmit)="addComment(task)">
+                        <label [for]="'comment-' + task.id">Add a comment</label>
+                        <textarea
+                          [id]="'comment-' + task.id"
+                          [name]="'comment-' + task.id"
+                          [(ngModel)]="commentDrafts[task.id]"
+                          required
+                          maxlength="5000"
+                          rows="2"
+                        ></textarea>
+                        <button
+                          class="button button-secondary"
+                          type="submit"
+                          [disabled]="commentBusyId === task.id"
+                        >
+                          Post comment
+                        </button>
+                      </form>
+                    </div>
+                  }
+                }
+              </article>
+            } @empty {
+              <p class="column-empty">Drop a task here</p>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  }
+</section>
+
+<section class="workspace-section" aria-labelledby="activity-heading">
+  <div class="section-heading">
+    <div>
+      <h2 id="activity-heading">Recent activity</h2>
+      <p>Milestone, task, and comment updates from this project.</p>
+    </div>
+  </div>
+  @if (isLoadingActivity) {
+    <div class="loading-state" role="status">Loading activity...</div>
+  } @else if (activity.length) {
+    <ol class="activity-list">
+      @for (item of activity; track item.id) {
+        <li class="activity-item">
+          <span class="activity-dot" aria-hidden="true"></span>
+          <div>
+            <p>
+              <strong>{{ item.actor_name }}</strong>
+              {{ humanizeAction(item.action) }}
+            </p>
+            <time [attr.datetime]="item.created_at">
+              {{ item.created_at | date: 'medium' }}
+            </time>
+          </div>
+        </li>
+      }
+    </ol>
+  } @else {
+    <div class="empty-state compact-empty">
+      <p>No project activity yet.</p>
+    </div>
+  }
+</section>

@@ -1,19 +1,20 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly changeDetector = inject(ChangeDetectorRef);
 
   email = '';
   password = '';
@@ -39,11 +40,11 @@ export class LoginComponent {
       })
       .subscribe({
         next: (response) => {
-          sessionStorage.setItem('auth_token', response.token);
-          sessionStorage.setItem('auth_user', JSON.stringify(response.user));
-
+          this.authService.saveSession(response);
           this.successMessage = response.message;
           this.isLoading = false;
+          this.changeDetector.markForCheck();
+          void this.router.navigate(['/projects']);
         },
 
         error: (error: unknown) => {
@@ -51,6 +52,7 @@ export class LoginComponent {
 
           this.successMessage = '';
           this.isLoading = false;
+          this.changeDetector.markForCheck();
         },
       });
   }
@@ -70,9 +72,5 @@ export class LoginComponent {
     }
 
     return 'Unable to sign in. Please try again.';
-  }
-  logout(): void {
-    this.authService.logout();
-    void this.router.navigate(['/login']);
   }
 }

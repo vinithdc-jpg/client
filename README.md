@@ -1,59 +1,42 @@
-# Client
+# DevCollab client
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.2.
+The client is an Angular standalone application for authenticated client and
+freelancer workflows. The current project slice includes project discovery and
+management, proposal submission and review, milestone planning and review, a
+role-aware Kanban task board, task comments, activity history, and freelancer
+proposal history.
+Project and bid requests use the Express API and PostgreSQL persistence; access
+permissions are enforced by the server.
 
-## Development server
+## Configuration
 
-To start a local development server, run:
+Set the API base URL in `src/environments/environment.ts`. The local default is
+`http://localhost:5000/api`. The API's `CLIENT_URL` must match the browser
+origin used to serve this client, normally `http://localhost:4200`.
 
-```bash
-ng serve
-```
+## Development
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Install the client dependencies, then run:
 
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
+The application is served at `http://localhost:4200`.
 
-To build the project run:
+## Verification
 
 ```bash
-ng build
+npm test -- --watch=false
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Main routes
 
-## Running unit tests
+- `/login` and `/register` are public.
+- `/projects` lists the client's projects or open projects visible to a freelancer.
+- `/projects/new` is restricted to clients.
+- `/projects/:projectId` shows project details and role-appropriate proposal actions. Clients and assigned freelancers can also access the milestone, task board, comment, and activity workspace.
+- `/bids` is restricted to freelancers and shows their submitted proposals.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The API route and permission summary is documented in [the server README](../server/README.md).

@@ -1,4 +1,26 @@
 
+<header class="app-header">
+  <a class="brand" routerLink="/projects" aria-label="DevCollab home">
+    <span class="brand-mark">D</span>
+    <span>DevCollab</span>
+  </a>
 
+  @if (authService.currentUser(); as user) {
+    <nav class="app-navigation" aria-label="Main navigation">
+      <a routerLink="/projects" routerLinkActive="active">Projects</a>
+      @if (user.role === 'client') {
+        <a routerLink="/projects/new" routerLinkActive="active">Create project</a>
+      } @else {
+        <a routerLink="/bids" routerLinkActive="active">My proposals</a>
+      }
+    </nav>
+    <div class="account-menu">
+      <span class="account-name">{{ user.name }}</span>
+      <button type="button" class="button button-quiet" (click)="logout()">Log out</button>
+    </div>
+  }
+</header>
 
+<main class="app-main">
 <router-outlet />
+</main>

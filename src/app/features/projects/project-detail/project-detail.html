@@ -1,0 +1,271 @@
+<section class="page-shell">
+  <div class="page-heading">
+    <div>
+      <a routerLink="/projects" class="back-link">Back to projects</a>
+      @if (project) {
+        <h1>{{ project.title }}</h1>
+        <p>Project workspace and proposal details</p>
+      } @else {
+        <h1>Project details</h1>
+      }
+    </div>
+    @if (project && !isEditing && (canEdit || canCancel || canComplete)) {
+      <div class="heading-actions">
+        @if (canEdit) {
+          <button class="button button-secondary" type="button" (click)="beginEdit()">
+            Edit project
+          </button>
+        }
+        @if (canComplete) {
+          <button
+            class="button button-primary"
+            type="button"
+            [disabled]="isSaving"
+            (click)="changeProjectStatus('completed')"
+          >
+            Mark completed
+          </button>
+        }
+        @if (canCancel) {
+          <button
+            class="button button-danger"
+            type="button"
+            [disabled]="isSaving"
+            (click)="changeProjectStatus('cancelled')"
+          >
+            Cancel project
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  @if (errorMessage) {
+    <p class="notice notice-error" role="alert">{{ errorMessage }}</p>
+  }
+  @if (successMessage) {
+    <p class="notice notice-success" role="status">{{ successMessage }}</p>
+  }
+
+  @if (isLoading) {
+    <div class="panel loading-state" role="status">Loading project...</div>
+  } @else if (project) {
+    @if (isEditing) {
+      <form class="panel" #editForm="ngForm" (ngSubmit)="saveProject()">
+        <h2>Edit project details</h2>
+        <div class="form-grid detail-edit-grid">
+          <div class="field field-wide">
+            <label for="edit-title">Project title</label>
+            <input
+              id="edit-title"
+              name="title"
+              type="text"
+              [(ngModel)]="title"
+              required
+              maxlength="150"
+            />
+          </div>
+          <div class="field field-wide">
+            <label for="edit-description">Description</label>
+            <textarea
+              id="edit-description"
+              name="description"
+              [(ngModel)]="description"
+              required
+              maxlength="20000"
+              rows="6"
+            ></textarea>
+          </div>
+          <div class="field">
+            <label for="edit-budget">Budget</label>
+            <input
+              id="edit-budget"
+              name="budget"
+              type="number"
+              [(ngModel)]="budget"
+              required
+              min="0"
+              step="0.01"
+            />
+          </div>
+          <div class="field">
+            <label for="edit-deadline">Deadline (optional)</label>
+            <input
+              id="edit-deadline"
+              name="deadline"
+              type="date"
+              [(ngModel)]="deadline"
+            />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button
+            class="button button-primary"
+            type="submit"
+            [disabled]="isSaving || editForm.invalid"
+          >
+            {{ isSaving ? 'Saving...' : 'Save changes' }}
+          </button>
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="cancelEdit()"
+            [disabled]="isSaving"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    } @else {
+      <article class="panel project-detail-card">
+        <div class="proposal-header">
+          <span [class]="'status-badge status-' + project.status">
+            {{ statusLabel }}
+          </span>
+          @if (project.client_name && user()?.role === 'freelancer') {
+            <span class="detail-subtle">Posted by {{ project.client_name }}</span>
+          }
+        </div>
+        <p class="project-description">{{ project.description }}</p>
+        <div class="project-meta detail-meta">
+          <span><strong>Budget</strong> {{ project.budget | currency }}</span>
+          <span>
+            <strong>Deadline</strong>
+            {{ project.deadline ? (project.deadline | date: 'mediumDate') : 'Not set' }}
+          </span>
+          <span><strong>Created</strong> {{ project.created_at | date: 'mediumDate' }}</span>
+        </div>
+      </article>
+    }
+
+    @if (user()?.role === 'client') {
+      <section class="panel" aria-labelledby="proposals-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="proposals-heading">Freelancer proposals</h2>
+            <p>Review proposed budgets and delivery estimates.</p>
+          </div>
+          @if (bids.length) {
+            <span class="count-label">{{ bids.length }} proposal{{ bids.length === 1 ? '' : 's' }}</span>
+          }
+        </div>
+
+        @if (bidsLoading) {
+          <div class="loading-state" role="status">Loading proposals...</div>
+        } @else if (bids.length) {
+          <div class="proposal-list">
+            @for (bid of bids; track bid.id) {
+              <article class="proposal-card">
+                <div class="proposal-header">
+                  <div>
+                    <h3>{{ bid.freelancer_name || 'Freelancer' }}</h3>
+                    <span class="detail-subtle">{{ bid.estimated_days }} day estimate</span>
+                  </div>
+                  <span [class]="'status-badge status-' + bid.status">{{ bid.status }}</span>
+                </div>
+                <div class="project-meta">
+                  <span><strong>Proposed</strong> {{ bid.proposed_amount | currency }}</span>
+                  <span><strong>Submitted</strong> {{ bid.created_at | date: 'mediumDate' }}</span>
+                </div>
+                <p>{{ bid.proposal }}</p>
+                @if (bid.status === 'pending' && project.status === 'open') {
+                  <div class="form-actions">
+                    <button
+                      class="button button-primary"
+                      type="button"
+                      [disabled]="busyBidId !== ''"
+                      (click)="decideBid(bid, 'accept')"
+                    >
+                      {{ busyBidId === bid.id ? 'Saving...' : 'Accept proposal' }}
+                    </button>
+                    <button
+                      class="button button-secondary"
+                      type="button"
+                      [disabled]="busyBidId !== ''"
+                      (click)="decideBid(bid, 'reject')"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                }
+              </article>
+            }
+          </div>
+        } @else {
+          <div class="empty-state compact-empty">
+            <h2>No proposals yet</h2>
+            <p>Freelancer proposals will appear here when they apply.</p>
+          </div>
+        }
+      </section>
+    } @else if (project.status === 'open' && !bidSubmitted) {
+      <section class="panel" aria-labelledby="proposal-form-heading">
+        <h2 id="proposal-form-heading">Submit a proposal</h2>
+        <p class="section-intro">Share your price, delivery estimate, and approach.</p>
+        <form #bidForm="ngForm" (ngSubmit)="submitBid()">
+          <div class="form-grid">
+            <div class="field">
+              <label for="proposed-amount">Proposed amount</label>
+              <input
+                id="proposed-amount"
+                name="proposedAmount"
+                type="number"
+                [(ngModel)]="proposedAmount"
+                required
+                min="0.01"
+                step="0.01"
+              />
+            </div>
+            <div class="field">
+              <label for="estimated-days">Estimated duration (days)</label>
+              <input
+                id="estimated-days"
+                name="estimatedDays"
+                type="number"
+                [(ngModel)]="estimatedDays"
+                required
+                min="1"
+                step="1"
+              />
+            </div>
+            <div class="field field-wide">
+              <label for="proposal-description">Proposal</label>
+              <textarea
+                id="proposal-description"
+                name="proposal"
+                [(ngModel)]="proposal"
+                required
+                maxlength="20000"
+                rows="6"
+              ></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button
+              class="button button-primary"
+              type="submit"
+              [disabled]="isSaving || bidForm.invalid"
+            >
+              {{ isSaving ? 'Submitting...' : 'Submit proposal' }}
+            </button>
+          </div>
+        </form>
+      </section>
+    } @else if (bidSubmitted) {
+      <p class="detail-subtle">
+        You can track this proposal in <a routerLink="/bids">My proposals</a>.
+      </p>
+    }
+
+    @if (canShowWorkspace && project && user(); as currentUser) {
+      <app-project-workspace
+        [projectId]="project.id"
+        [projectStatus]="project.status"
+        [role]="currentUser.role"
+        [currentUserId]="currentUser.id"
+        [assignedFreelancerId]="acceptedFreelancerId"
+        [assignedFreelancerName]="acceptedFreelancerName"
+      />
+    }
+  }
+</section>
