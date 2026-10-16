@@ -11,6 +11,8 @@
     {{ isLoading ? 'Signing in...' : 'Sign in' }}
   </button>
 
+  <button type="button" (click)="logout()">Log out</button>
+
   @if (errorMessage) {
     <p class="error-message" role="alert">
       {{ errorMessage }}

@@ -1,12 +1,19 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { AuthService } from '../core/services/auth.service';
 import { App } from './app';
+import { routes } from './app.routes';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-    })
-      .compileComponents();
+      providers: [
+        provideRouter(routes),
+        { provide: AuthService, useValue: { login: () => of({}) } },
+      ],
+    }).compileComponents();
   });
 
   it('should create the app', () => {
@@ -15,10 +22,13 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', async () => {
+  it('redirects the root URL to the sign-in page', async () => {
     const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
+    fixture.detectChanges();
+    await TestBed.inject(Router).navigateByUrl('/');
+    fixture.detectChanges();
+
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, client');
+    expect(compiled.querySelector('h2')?.textContent).toContain('Sign in to DevCollab');
   });
 });
