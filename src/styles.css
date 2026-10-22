@@ -56,17 +56,6 @@
     @apply text-[#235b8e] no-underline hover:text-[#16436d];
   }
 
-  button,
-  a,
-  input,
-  select,
-  textarea {
-    @apply outline-offset-[3px];
-  }
-
-  :focus-visible {
-    @apply outline-3 outline-[#72a9d8];
-  }
 }
 
 @layer components {

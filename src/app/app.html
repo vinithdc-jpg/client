@@ -1,48 +1,53 @@
 <header
-  class="flex min-h-18 items-center gap-8 border-b border-[#e3e8ef] px-[5vw] max-[720px]:min-h-0 max-[720px]:flex-wrap max-[720px]:gap-x-5 max-[720px]:gap-y-3 max-[720px]:px-[4vw] max-[720px]:py-3.5 bg-[#1E293B] dark:border-slate-700"
+  class="sticky top-0 z-50 flex min-h-14 flex-wrap items-center gap-x-6 gap-y-2 border-b border-slate-200 bg-[#111827] px-4 py-2 sm:px-6 lg:flex-nowrap lg:px-[5vw] dark:border-slate-700"
 >
-  <a
-    class="inline-flex items-center gap-2.5 text-[1.12rem] font-[750] text-[#172d46] dark:text-slate-100"
-    routerLink="/projects"
-    aria-label="DevCollab home"
-  >
-    <img class="h-8 w-auto object-contain" src="/image.png" alt="Logo" />
+  <!-- Logo -->
+  <a class="inline-flex shrink-0 items-center" routerLink="/projects" aria-label="DevCollab home">
+    <img class="h-7 w-auto max-w-36 object-contain sm:h-8" src="/image.png" alt="DevCollab Logo" />
   </a>
 
   @if (authService.currentUser(); as user) {
+    <!-- Navigation -->
     <nav
-      class="flex flex-1 items-center gap-2 max-[720px]:order-3 max-[720px]:basis-full max-[720px]:overflow-x-auto"
+      class="order-3 flex min-w-0 w-full flex-1 items-center gap-1 overflow-x-auto whitespace-nowrap pb-1 sm:gap-2 lg:order-0 lg:w-auto lg:pb-0"
       aria-label="Main navigation"
     >
       <a
-        class="rounded-lg px-3 py-2.25 text-[0.92rem] font-medium text-[#526174] dark:text-slate-300"
+        class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
         routerLink="/projects"
-        routerLinkActive="bg-[#f0f5fa] text-[#1d527f] dark:bg-slate-900 dark:!text-blue-400"
-        >Projects</a
+        routerLinkActive="bg-slate-800 !text-white"
       >
+        Projects
+      </a>
+
       @if (user.role === 'client') {
         <a
-          class="rounded-lg px-3 py-2.25 text-[0.92rem] font-medium text-[#526174] dark:text-slate-300"
+          class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
           routerLink="/projects/new"
-          routerLinkActive="bg-[#f0f5fa] text-[#1d527f] dark:bg-slate-900 dark:!text-blue-400"
-          >Create project</a
+          routerLinkActive="bg-slate-800 !text-white"
         >
+          Create project
+        </a>
       } @else {
         <a
-          class="rounded-lg px-3 py-2.25 text-[0.92rem] font-medium text-[#526174] dark:text-slate-300"
+          class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
           routerLink="/bids"
-          routerLinkActive="bg-[#f0f5fa] text-[#1d527f] dark:bg-slate-900 dark:!text-blue-400"
-          >My proposals</a
+          routerLinkActive="bg-slate-800 !text-white"
         >
+          My proposals
+        </a>
       }
     </nav>
-    <div class="flex items-center gap-3.5 max-[720px]:ml-auto">
-      <span class="text-[0.9rem] text-[#526174] max-[720px]:hidden dark:text-slate-300">{{
-        user.name
-      }}</span>
+
+    <!-- User actions -->
+    <div class="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
+      <span class="hidden max-w-36 truncate text-sm text-slate-300 md:block" [title]="user.name">
+        {{ user.name }}
+      </span>
+
       <button
         type="button"
-        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-transparent text-[#526174] dark:border-slate-600 dark:text-slate-300"
+        class="inline-flex min-h-9 items-center justify-center rounded-lg border border-slate-600 px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 disabled:cursor-not-allowed disabled:opacity-60"
         (click)="logout()"
       >
         Log out
@@ -51,8 +56,6 @@
   }
 </header>
 
-<main
-  class="mx-auto min-h-[calc(100vh-72px)] w-[min(1180px,92vw)] pt-10.5 pb-18 max-[720px]:pt-7"
->
+<main class="mx-auto min-h-[calc(100vh-56px)] w-[92%] max-w-295 py-7 sm:py-8 lg:py-10">
   <router-outlet />
 </main>
