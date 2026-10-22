@@ -1,5 +1,5 @@
 <section
-  class="mx-auto my-8 grid w-[min(440px,100%)] gap-[18px] rounded-[14px] border border-[#e2e8f0] bg-white p-8 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] dark:bg-slate-900 dark:border-slate-700"
+  class="mx-auto my-8 grid w-[min(440px,100%)] gap-4.5 rounded-[14px] border border-[#e2e8f0] bg-white p-8 shadow-[0_5px_18px_rgb(26_48_75/4%)] dark:bg-slate-900 dark:border-slate-700"
   aria-labelledby="register-heading"
 >
   <h1 class="m-0 text-[2em] font-bold text-[#172d46] dark:text-slate-100" id="register-heading">
@@ -31,7 +31,7 @@
     </select>
 
     <button
-      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
       type="submit"
       [disabled]="isLoading || registerForm.invalid"
     >
@@ -40,7 +40,7 @@
 
     @if (errorMessage) {
       <p
-        class="rounded-lg px-[14px] py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
+        class="rounded-lg px-3.5 py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
         role="alert"
       >
         {{ errorMessage }}
@@ -49,7 +49,7 @@
 
     @if (successMessage) {
       <p
-        class="rounded-lg px-[14px] py-3 leading-normal border border-[#bfe2ca] bg-[#effaf2] text-[#23643b] dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300"
+        class="rounded-lg px-3.5 py-3 leading-normal border border-[#bfe2ca] bg-[#effaf2] text-[#23643b] dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300"
         role="status"
       >
         {{ successMessage }}

@@ -1,5 +1,5 @@
 <header
-  class="sticky top-0 z-50 flex min-h-14 flex-wrap items-center gap-x-6 gap-y-2 border-b border-[#111827] bg-[#111827] px-4 py-2 sm:px-6 lg:flex-nowrap lg:px-[5vw]"
+  class="sticky top-0 z-50 flex min-h-14 flex-wrap items-center gap-x-6 gap-y-2 border-b border-slate-200 bg-[#111827] px-4 py-2 sm:px-6 lg:flex-nowrap lg:px-[5vw] dark:border-slate-700"
 >
   <!-- Logo -->
   <a class="inline-flex shrink-0 items-center" routerLink="/projects" aria-label="DevCollab home">
@@ -16,6 +16,7 @@
         class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-indigo-700 hover:text-white"
         routerLink="/projects"
         routerLinkActive="bg-indigo-600 !text-white"
+        [routerLinkActiveOptions]="{ exact: true }"
       >
         Projects
       </a>
@@ -25,6 +26,7 @@
           class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-indigo-700 hover:text-white"
           routerLink="/projects/new"
           routerLinkActive="bg-indigo-600 !text-white"
+          [routerLinkActiveOptions]="{ exact: true }"
         >
           Create project
         </a>
@@ -33,6 +35,7 @@
           class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-indigo-700 hover:text-white"
           routerLink="/bids"
           routerLinkActive="bg-indigo-600 !text-white"
+          [routerLinkActiveOptions]="{ exact: true }"
         >
           My proposals
         </a>
@@ -41,13 +44,13 @@
 
     <!-- User actions -->
     <div class="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
-      <span class="hidden max-w-36 truncate text-sm text-white/80 md:block" [title]="user.name">
+      <span class="hidden max-w-36 truncate text-sm text-slate-300 md:block" [title]="user.name">
         {{ user.name }}
       </span>
 
       <button
         type="button"
-        class="inline-flex min-h-9 items-center justify-center rounded-lg border border-white/30 px-3 py-2 text-sm font-semibold text-white transition-colors hover:border-white/50 hover:bg-indigo-700 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 disabled:cursor-not-allowed disabled:opacity-60"
+        class="inline-flex min-h-9 items-center justify-center rounded-lg border border-slate-600 px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 disabled:cursor-not-allowed disabled:opacity-60"
         (click)="logout()"
       >
         Log out

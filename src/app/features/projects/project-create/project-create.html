@@ -11,19 +11,19 @@
       </p>
     </div>
     <a
-      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
+      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
       routerLink="/projects"
       >Cancel</a
     >
   </div>
 
   <form
-    class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] dark:bg-slate-900 dark:border-slate-700"
+    class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 dark:bg-slate-900 dark:border-slate-700"
     #projectForm="ngForm"
     (ngSubmit)="onSubmit()"
   >
-    <div class="grid grid-cols-1 gap-[18px] min-[721px]:grid-cols-2">
-      <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
+    <div class="grid grid-cols-1 gap-4.5 min-[721px]:grid-cols-2">
+      <div class="grid min-w-0 gap-1.75 min-[721px]:col-span-full">
         <label for="project-title">Project title</label>
         <input
           id="project-title"
@@ -36,10 +36,10 @@
         />
       </div>
 
-      <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
+      <div class="grid min-w-0 gap-1.75 min-[721px]:col-span-full">
         <label for="project-description">Description</label>
         <textarea
-          class="min-h-[130px]"
+          class="min-h-32.5"
           id="project-description"
           name="description"
           [(ngModel)]="description"
@@ -49,7 +49,7 @@
         ></textarea>
       </div>
 
-      <div class="grid min-w-0 gap-[7px]">
+      <div class="grid min-w-0 gap-1.75">
         <label for="project-budget">Budget</label>
         <input
           id="project-budget"
@@ -62,7 +62,7 @@
         />
       </div>
 
-      <div class="grid min-w-0 gap-[7px]">
+      <div class="grid min-w-0 gap-1.75">
         <label for="project-deadline">Deadline (optional)</label>
         <input id="project-deadline" name="deadline" type="date" [(ngModel)]="deadline" />
       </div>
@@ -70,7 +70,7 @@
 
     @if (errorMessage) {
       <p
-        class="rounded-lg px-[14px] py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
+        class="rounded-lg px-3.5 py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
         role="alert"
       >
         {{ errorMessage }}
@@ -79,14 +79,14 @@
 
     <div class="mt-5 flex flex-wrap gap-2.5">
       <button
-        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
         type="submit"
         [disabled]="isLoading || projectForm.invalid"
       >
         {{ isLoading ? 'Creating project...' : 'Create project' }}
       </button>
       <a
-        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
         routerLink="/projects"
         >Cancel</a
       >

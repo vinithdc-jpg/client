@@ -25,7 +25,7 @@
       <div class="flex flex-wrap justify-end gap-2 max-[720px]:justify-start">
         @if (canEdit) {
           <button
-            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
+            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
             type="button"
             (click)="beginEdit()"
           >
@@ -34,7 +34,7 @@
         }
         @if (canComplete) {
           <button
-            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
             type="button"
             [disabled]="isSaving"
             (click)="changeProjectStatus('completed')"
@@ -44,7 +44,7 @@
         }
         @if (canCancel) {
           <button
-            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#f0c5c1] bg-white text-[#a32d28] hover:enabled:bg-[#fff4f2] dark:bg-slate-900 dark:border-red-800"
+            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#a32d28] hover:enabled:bg-[#fff4f2] dark:bg-slate-900 dark:border-red-800"
             type="button"
             [disabled]="isSaving"
             (click)="changeProjectStatus('cancelled')"
@@ -58,7 +58,7 @@
 
   @if (errorMessage) {
     <p
-      class="rounded-lg px-[14px] py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
+      class="rounded-lg px-3.5 py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
       role="alert"
     >
       {{ errorMessage }}
@@ -66,7 +66,7 @@
   }
   @if (successMessage) {
     <p
-      class="rounded-lg px-[14px] py-3 leading-normal border border-[#bfe2ca] bg-[#effaf2] text-[#23643b] dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300"
+      class="rounded-lg px-3.5 py-3 leading-normal border border-[#bfe2ca] bg-[#effaf2] text-[#23643b] dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300"
       role="status"
     >
       {{ successMessage }}
@@ -75,7 +75,7 @@
 
   @if (isLoading) {
     <div
-      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] px-5 py-[38px] text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
+      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 px-5 py-9.5 text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
       role="status"
     >
       Loading project...
@@ -83,15 +83,15 @@
   } @else if (project) {
     @if (isEditing) {
       <form
-        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] dark:bg-slate-900 dark:border-slate-700"
+        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 dark:bg-slate-900 dark:border-slate-700"
         #editForm="ngForm"
         (ngSubmit)="saveProject()"
       >
         <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100">
           Edit project details
         </h2>
-        <div class="grid grid-cols-1 gap-[18px] min-[721px]:grid-cols-2 detail-edit-grid">
-          <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
+        <div class="grid grid-cols-1 gap-4.5 min-[721px]:grid-cols-2 detail-edit-grid">
+          <div class="grid min-w-0 gap-1.75 min-[721px]:col-span-full">
             <label for="edit-title">Project title</label>
             <input
               id="edit-title"
@@ -102,10 +102,10 @@
               maxlength="150"
             />
           </div>
-          <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
+          <div class="grid min-w-0 gap-1.75 min-[721px]:col-span-full">
             <label for="edit-description">Description</label>
             <textarea
-              class="min-h-[130px]"
+              class="min-h-32.5"
               id="edit-description"
               name="description"
               [(ngModel)]="description"
@@ -114,7 +114,7 @@
               rows="6"
             ></textarea>
           </div>
-          <div class="grid min-w-0 gap-[7px]">
+          <div class="grid min-w-0 gap-1.75">
             <label for="edit-budget">Budget</label>
             <input
               id="edit-budget"
@@ -126,21 +126,21 @@
               step="0.01"
             />
           </div>
-          <div class="grid min-w-0 gap-[7px]">
+          <div class="grid min-w-0 gap-1.75">
             <label for="edit-deadline">Deadline (optional)</label>
             <input id="edit-deadline" name="deadline" type="date" [(ngModel)]="deadline" />
           </div>
         </div>
         <div class="mt-5 flex flex-wrap gap-2.5">
           <button
-            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
             type="submit"
             [disabled]="isSaving || editForm.invalid"
           >
             {{ isSaving ? 'Saving...' : 'Save changes' }}
           </button>
           <button
-            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
+            class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
             type="button"
             (click)="cancelEdit()"
             [disabled]="isSaving"
@@ -151,7 +151,7 @@
       </form>
     } @else {
       <article
-        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] grid gap-[22px] dark:bg-slate-900 dark:border-slate-700"
+        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 grid gap-5.5 dark:bg-slate-900 dark:border-slate-700"
       >
         <div class="flex flex-wrap items-center justify-between gap-2.5">
           <span [class]="'status-badge status-' + project.status">
@@ -167,7 +167,7 @@
           {{ project.description }}
         </p>
         <div
-          class="flex flex-wrap gap-x-[18px] gap-y-2.5 text-[0.88rem] text-[#536479] border-t border-[#e8edf3] pt-[18px] dark:border-slate-700 dark:text-slate-300"
+          class="flex flex-wrap gap-x-4.5 gap-y-2.5 text-[0.88rem] text-[#536479] border-t border-[#e8edf3] pt-4.5 dark:border-slate-700 dark:text-slate-300"
         >
           <span
             ><strong class="mb-1 block text-[#34465b] dark:text-slate-300">Budget</strong>
@@ -187,11 +187,11 @@
 
     @if (user()?.role === 'client') {
       <section
-        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] dark:bg-slate-900 dark:border-slate-700"
+        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 dark:bg-slate-900 dark:border-slate-700"
         aria-labelledby="proposals-heading"
       >
         <div
-          class="mb-[18px] flex items-center justify-between gap-4 max-[720px]:items-start max-[720px]:flex-col"
+          class="mb-4.5 flex items-center justify-between gap-4 max-[720px]:items-start max-[720px]:flex-col"
         >
           <div>
             <h2
@@ -212,14 +212,14 @@
         </div>
 
         @if (bidsLoading) {
-          <div class="px-5 py-[38px] text-center text-[#68778a] dark:text-slate-400" role="status">
+          <div class="px-5 py-9.5 text-center text-[#68778a] dark:text-slate-400" role="status">
             Loading proposals...
           </div>
         } @else if (bids.length) {
-          <div class="grid gap-[14px]">
+          <div class="grid gap-3.5">
             @for (bid of bids; track bid.id) {
               <article
-                class="grid gap-[14px] rounded-[14px] border border-[#e2e8f0] bg-white p-[18px] shadow-[0_5px_18px_rgb(26_48_75_/_4%)] dark:bg-slate-900 dark:border-slate-700"
+                class="grid gap-3.5 rounded-[14px] border border-[#e2e8f0] bg-white p-4.5 shadow-[0_5px_18px_rgb(26_48_75/4%)] dark:bg-slate-900 dark:border-slate-700"
               >
                 <div class="flex flex-wrap items-center justify-between gap-2.5">
                   <div>
@@ -233,7 +233,7 @@
                   <span [class]="'status-badge status-' + bid.status">{{ bid.status }}</span>
                 </div>
                 <div
-                  class="flex flex-wrap gap-x-[18px] gap-y-2.5 text-[0.88rem] text-[#536479] dark:text-slate-300"
+                  class="flex flex-wrap gap-x-4.5 gap-y-2.5 text-[0.88rem] text-[#536479] dark:text-slate-300"
                 >
                   <span
                     ><strong class="text-[#34465b] dark:text-slate-300">Proposed</strong>
@@ -250,7 +250,7 @@
                 @if (bid.status === 'pending' && project.status === 'open') {
                   <div class="mt-5 flex flex-wrap gap-2.5">
                     <button
-                      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+                      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
                       type="button"
                       [disabled]="busyBidId !== ''"
                       (click)="decideBid(bid, 'accept')"
@@ -258,7 +258,7 @@
                       {{ busyBidId === bid.id ? 'Saving...' : 'Accept proposal' }}
                     </button>
                     <button
-                      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
+                      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
                       type="button"
                       [disabled]="busyBidId !== ''"
                       (click)="decideBid(bid, 'reject')"
@@ -271,7 +271,7 @@
             }
           </div>
         } @else {
-          <div class="px-5 py-[38px] text-center text-[#68778a] pb-3 dark:text-slate-400">
+          <div class="px-5 py-9.5 text-center text-[#68778a] pb-3 dark:text-slate-400">
             <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100 mb-2">
               No proposals yet
             </h2>
@@ -283,7 +283,7 @@
       </section>
     } @else if (project.status === 'open' && !bidSubmitted) {
       <section
-        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] dark:bg-slate-900 dark:border-slate-700"
+        class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 dark:bg-slate-900 dark:border-slate-700"
         aria-labelledby="proposal-form-heading"
       >
         <h2
@@ -292,12 +292,12 @@
         >
           Submit a proposal
         </h2>
-        <p class="mt-[7px] mb-0 text-[#6a7889] dark:text-slate-400">
+        <p class="mt-1.75 mb-0 text-[#6a7889] dark:text-slate-400">
           Share your price, delivery estimate, and approach.
         </p>
         <form #bidForm="ngForm" (ngSubmit)="submitBid()">
-          <div class="grid grid-cols-1 gap-[18px] min-[721px]:grid-cols-2">
-            <div class="grid min-w-0 gap-[7px]">
+          <div class="grid grid-cols-1 gap-4.5 min-[721px]:grid-cols-2">
+            <div class="grid min-w-0 gap-1.75">
               <label for="proposed-amount">Proposed amount</label>
               <input
                 id="proposed-amount"
@@ -309,7 +309,7 @@
                 step="0.01"
               />
             </div>
-            <div class="grid min-w-0 gap-[7px]">
+            <div class="grid min-w-0 gap-1.75">
               <label for="estimated-days">Estimated duration (days)</label>
               <input
                 id="estimated-days"
@@ -321,10 +321,10 @@
                 step="1"
               />
             </div>
-            <div class="grid min-w-0 gap-[7px] min-[721px]:col-span-full">
+            <div class="grid min-w-0 gap-1.75 min-[721px]:col-span-full">
               <label for="proposal-description">Proposal</label>
               <textarea
-                class="min-h-[130px]"
+                class="min-h-32.5"
                 id="proposal-description"
                 name="proposal"
                 [(ngModel)]="proposal"
@@ -336,7 +336,7 @@
           </div>
           <div class="mt-5 flex flex-wrap gap-2.5">
             <button
-              class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+              class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
               type="submit"
               [disabled]="isSaving || bidForm.invalid"
             >
