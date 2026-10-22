@@ -16,7 +16,7 @@
     </div>
     @if (user()?.role === 'client') {
       <a
-        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
         routerLink="/projects/new"
         >Create a project</a
       >
@@ -24,10 +24,10 @@
   </div>
 
   <form
-    class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] flex flex-wrap items-end gap-3 dark:bg-slate-900 dark:border-slate-700"
+    class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 flex flex-wrap items-end gap-3 dark:bg-slate-900 dark:border-slate-700"
     (ngSubmit)="applyFilters()"
   >
-    <div class="grid min-w-0 gap-[7px] flex-[1_1_260px]">
+    <div class="grid min-w-0 gap-1.75 flex-[1_1_260px]">
       <label for="project-search">Search projects</label>
       <input
         id="project-search"
@@ -37,7 +37,7 @@
         [(ngModel)]="search"
       />
     </div>
-    <div class="grid min-w-0 gap-[7px] flex-[0_1_190px]">
+    <div class="grid min-w-0 gap-1.75 flex-[0_1_190px]">
       <label for="project-status">Status</label>
       <select id="project-status" name="status" [(ngModel)]="status">
         <option value="">All visible statuses</option>
@@ -48,7 +48,7 @@
       </select>
     </div>
     <button
-      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
+      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
       type="submit"
       [disabled]="isLoading"
     >
@@ -58,7 +58,7 @@
 
   @if (errorMessage) {
     <p
-      class="rounded-lg px-[14px] py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
+      class="rounded-lg px-3.5 py-3 leading-normal border border-[#f3c5c2] bg-[#fff3f2] text-[#902e29] dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
       role="alert"
     >
       {{ errorMessage }}
@@ -67,7 +67,7 @@
 
   @if (isLoading) {
     <div
-      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] px-5 py-[38px] text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
+      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 px-5 py-9.5 text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
       role="status"
     >
       Loading projects...
@@ -76,7 +76,7 @@
     <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-4">
       @for (project of projects; track project.id) {
         <a
-          class="grid min-h-[230px] content-start gap-4 rounded-[14px] border border-[#e2e8f0] bg-white p-[22px] text-inherit shadow-[0_5px_18px_rgb(26_48_75_/_4%)] transition-[border-color,transform] duration-[140ms] hover:-translate-y-0.5 hover:border-[#b6cbe0] dark:bg-slate-900 dark:border-slate-700 dark:hover:border-slate-500"
+          class="grid min-h-57.5 content-start gap-4 rounded-[14px] border border-[#e2e8f0] bg-white p-5.5 text-inherit shadow-[0_5px_18px_rgb(26_48_75/4%)] transition-[border-color,transform] duration-140 hover:-translate-y-0.5 hover:border-[#b6cbe0] dark:bg-slate-900 dark:border-slate-700 dark:hover:border-slate-500"
           [routerLink]="['/projects', project.id]"
         >
           <div class="flex flex-wrap items-center justify-between gap-2.5">
@@ -91,7 +91,7 @@
             {{ project.description }}
           </p>
           <div
-            class="flex flex-wrap gap-x-[18px] gap-y-2.5 text-[0.88rem] text-[#536479] dark:text-slate-300"
+            class="flex flex-wrap gap-x-4.5 gap-y-2.5 text-[0.88rem] text-[#536479] dark:text-slate-300"
           >
             <span>Budget: {{ project.budget | currency }}</span>
             @if (project.deadline) {
@@ -114,7 +114,7 @@
       aria-label="Project result pages"
     >
       <button
-        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
         type="button"
         (click)="previousPage()"
         [disabled]="offset === 0 || isLoading"
@@ -123,7 +123,7 @@
       </button>
       <span>Page {{ pageNumber }} of {{ pageCount }}</span>
       <button
-        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 border-[#ccd6e1] bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
+        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
         type="button"
         (click)="nextPage()"
         [disabled]="offset + limit >= total || isLoading"
@@ -133,7 +133,7 @@
     </nav>
   } @else if (!errorMessage) {
     <div
-      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75_/_4%)] max-[720px]:p-[18px] px-5 py-[38px] text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
+      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 px-5 py-9.5 text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
     >
       <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100 mb-2">
         No projects found
@@ -147,7 +147,7 @@
       </p>
       @if (user()?.role === 'client') {
         <a
-          class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-[7px] rounded-lg border border-transparent px-[14px] py-[9px] text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
+          class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
           routerLink="/projects/new"
           >Create a project</a
         >
