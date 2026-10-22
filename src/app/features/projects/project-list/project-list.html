@@ -1,23 +1,28 @@
 <section class="grid gap-6" aria-labelledby="dashboard-heading">
   <div class="flex items-start justify-between gap-5 max-[720px]:flex-col">
-    <div>
-      <p class="mb-2 text-xs font-bold uppercase tracking-[0.14em] text-[#205b8f]">
-        DevCollab workspace
+    <div class="space-y-1">
+      <p
+        class="m-0 text-[11px] font-semibold uppercase tracking-[0.16em] text-indigo-600 dark:text-indigo-400"
+      >
+        DevCollab Workspace
       </p>
+
       <h1
-        class="m-0 text-[clamp(1.7rem,3vw,2.15rem)] font-bold tracking-[-0.035em] text-[#172d46] dark:text-slate-100"
         id="dashboard-heading"
+        class="m-0 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-slate-100"
       >
         {{ user()?.role === 'client' ? 'Project dashboard' : 'Explore projects' }}
       </h1>
-      <p class="mt-2 mb-0 text-[#657487] dark:text-slate-400">
+
+      <p class="m-0 max-w-2xl text-sm leading-5 text-slate-600 sm:text-base dark:text-slate-400">
         {{
           user()?.role === 'client'
-            ? 'Keep your projects and client conversations in one place.'
-            : 'Find a project, check its details, and start a client conversation.'
+            ? 'Manage your projects and client conversations in one place.'
+            : 'Discover projects, review requirements, and connect with clients.'
         }}
       </p>
     </div>
+
     <div class="flex justify-center items-center gap-2">
       <form (ngSubmit)="applyFilters()">
         <div class="relative text-gray-600 w-110">
@@ -70,7 +75,7 @@
 
   <div class="grid min-w-0 items-start gap-5 lg:grid-cols-[220px_minmax(0,1fr)_320px]">
     <aside
-      class="grid gap-5 rounded-[14px] border border-[#e2e8f0] bg-white p-5 shadow-[0_5px_18px_rgb(26_48_75/4%)] dark:bg-slate-900 dark:border-slate-700"
+      class="grid gap-5 rounded-[14px] border border-[#d3d8de] p-5 shadow-[0_5px_18px_rgb(26_48_75/4%)] dark:bg-slate-900 dark:border-slate-700"
       aria-label="Project filters"
     >
       <div class="grid gap-3" role="group" aria-labelledby="status-filter-heading">
@@ -136,9 +141,6 @@
         >
           Project details
         </h2>
-        @if (!isLoading) {
-          <span class="text-sm text-[#68778a] dark:text-slate-400">{{ total }} projects</span>
-        }
       </div>
 
       @if (isLoading) {

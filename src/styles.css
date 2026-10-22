@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --color-base: #ffffff;
+    --color-base: #fff8f8;
     --color-secondary: #111827;
     --color-accent: #4f46e5;
     --color-border: #e5e7eb;
@@ -148,4 +148,88 @@
 .status-withdrawn {
   background-color: #eef2ff;
   color: var(--color-accent);
+}
+
+/* Date field container */
+.milestone-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Field label */
+.milestone-date-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+}
+
+/* Date input */
+.milestone-date-input {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background-color: #ffffff;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  color-scheme: light;
+  box-sizing: border-box;
+}
+
+/* Hover effect */
+.milestone-date-input:hover {
+  border-color: #c4b5fd;
+}
+
+/* Focus effect */
+.milestone-date-input:focus {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+}
+
+/* Calendar icon - Chrome and Edge */
+.milestone-date-input::-webkit-calendar-picker-indicator {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.milestone-date-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Disabled state */
+.milestone-date-input:disabled {
+  background-color: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Dark mode support */
+.dark .milestone-date-input {
+  background-color: #1e293b;
+  border-color: #475569;
+  color: #f1f5f9;
+  color-scheme: dark;
+}
+
+.dark .milestone-date-label {
+  color: #cbd5e1;
+}
+
+.dark .milestone-date-input:focus {
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
 }

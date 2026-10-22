@@ -92,14 +92,21 @@
                     required
                   />
                 </div>
-                <div class="grid min-w-0 gap-1.75">
-                  <label [for]="'edit-milestone-date-' + milestone.id">Due date</label>
-                  <input
-                    [id]="'edit-milestone-date-' + milestone.id"
-                    name="editMilestoneDueDate"
-                    type="date"
-                    [(ngModel)]="editMilestoneDueDate"
-                  />
+                <div class="milestone-date-field">
+                  <label [for]="'edit-milestone-date-' + milestone.id" class="milestone-date-label"
+                    >Due date</label
+                  >
+                  <div class="relative w-full">
+                    <div class="relative">
+                      <input
+                        [id]="'edit-milestone-date-' + milestone.id"
+                        name="editMilestoneDueDate"
+                        type="date"
+                        [(ngModel)]="editMilestoneDueDate"
+                        class="milestone-date-input"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="mt-5 flex flex-wrap gap-2.5">
@@ -387,23 +394,192 @@
         </div>
         <div class="grid min-w-0 gap-1.75">
           <label for="new-task-milestone">Milestone (optional)</label>
-          <select id="new-task-milestone" name="taskMilestoneId" [(ngModel)]="taskMilestoneId">
-            <option value="">No milestone</option>
-            @for (milestone of milestones; track milestone.id) {
-              <option [value]="milestone.id">{{ milestone.title }}</option>
+          <div class="relative w-full">
+            <!-- Dropdown trigger -->
+            <button
+              id="new-task-milestone"
+              type="button"
+              (click)="isMilestoneDropdownOpen = !isMilestoneDropdownOpen"
+              class="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-sm text-slate-700 shadow-sm transition hover:border-violet-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-100"
+              [attr.aria-expanded]="isMilestoneDropdownOpen"
+              aria-haspopup="listbox"
+            >
+              <span class="truncate">
+                @if (taskMilestoneId) {
+                  {{
+                    milestones.find((m) => m.id === taskMilestoneId)?.title || 'Select milestone'
+                  }}
+                } @else {
+                  No milestone
+                }
+              </span>
+
+              <svg
+                class="ml-3 h-4 w-4 shrink-0 transition-transform"
+                [class.rotate-180]="isMilestoneDropdownOpen"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m6 9 6 6 6-6"
+                />
+              </svg>
+            </button>
+
+            <!-- Custom options -->
+            @if (isMilestoneDropdownOpen) {
+              <div
+                class="absolute left-0 top-full z-50 mt-2 max-h-60 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white p-1 shadow-xl"
+                role="listbox"
+                aria-label="Select milestone"
+              >
+                <!-- No milestone option -->
+                <button
+                  type="button"
+                  role="option"
+                  [attr.aria-selected]="!taskMilestoneId"
+                  (click)="taskMilestoneId = ''; isMilestoneDropdownOpen = false"
+                  class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition hover:bg-violet-50 hover:text-violet-700"
+                  [class.bg-violet-50]="!taskMilestoneId"
+                  [class.text-violet-700]="!taskMilestoneId"
+                >
+                  <span>No milestone</span>
+
+                  @if (!taskMilestoneId) {
+                    <span class="font-semibold">✓</span>
+                  }
+                </button>
+
+                @for (milestone of milestones; track milestone.id) {
+                  <button
+                    type="button"
+                    role="option"
+                    [attr.aria-selected]="taskMilestoneId === milestone.id"
+                    (click)="taskMilestoneId = milestone.id; isMilestoneDropdownOpen = false"
+                    class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition hover:bg-violet-50 hover:text-violet-700"
+                    [class.bg-violet-50]="taskMilestoneId === milestone.id"
+                    [class.text-violet-700]="taskMilestoneId === milestone.id"
+                  >
+                    <span class="truncate">{{ milestone.title }}</span>
+
+                    @if (taskMilestoneId === milestone.id) {
+                      <span class="ml-2 shrink-0 font-semibold">✓</span>
+                    }
+                  </button>
+                }
+              </div>
             }
-          </select>
+          </div>
         </div>
         <div class="grid min-w-0 gap-1.75">
           <label for="new-task-assignee">Assignee (optional)</label>
-          <select id="new-task-assignee" name="taskAssigneeId" [(ngModel)]="taskAssigneeId">
-            <option value="">Unassigned</option>
-            @if (assignedFreelancerId) {
-              <option [value]="assignedFreelancerId">
-                {{ assignedFreelancerName || 'Accepted freelancer' }}
-              </option>
+          <div class="relative w-full">
+            <!-- Dropdown trigger -->
+            <button
+              id="new-task-assignee"
+              type="button"
+              (click)="isAssigneeDropdownOpen = !isAssigneeDropdownOpen"
+              class="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-sm text-slate-700 shadow-sm transition hover:border-violet-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-100"
+              [attr.aria-expanded]="isAssigneeDropdownOpen"
+              aria-haspopup="listbox"
+            >
+              <span class="flex min-w-0 items-center gap-2">
+                <svg
+                  class="h-4 w-4 shrink-0 text-slate-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m16 0v-2a4 4 0 0 0-3-3.87M14 3.13a4 4 0 0 1 0 7.75M14 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                  />
+                </svg>
+
+                <span class="truncate">
+                  @if (taskAssigneeId && taskAssigneeId === assignedFreelancerId) {
+                    {{ assignedFreelancerName || 'Accepted freelancer' }}
+                  } @else {
+                    Unassigned
+                  }
+                </span>
+              </span>
+
+              <svg
+                class="ml-3 h-4 w-4 shrink-0 transition-transform"
+                [class.rotate-180]="isAssigneeDropdownOpen"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m6 9 6 6 6-6"
+                />
+              </svg>
+            </button>
+
+            <!-- Custom options -->
+            @if (isAssigneeDropdownOpen) {
+              <div
+                class="absolute left-0 top-full z-50 mt-2 w-full overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-xl"
+                role="listbox"
+                aria-label="Assign task"
+              >
+                <!-- Unassigned option -->
+                <button
+                  type="button"
+                  role="option"
+                  [attr.aria-selected]="!taskAssigneeId"
+                  (click)="taskAssigneeId = ''; isAssigneeDropdownOpen = false"
+                  class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition hover:bg-violet-50 hover:text-violet-700"
+                  [class.bg-violet-50]="!taskAssigneeId"
+                  [class.text-violet-700]="!taskAssigneeId"
+                >
+                  <span class="flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-slate-400"></span>
+                    Unassigned
+                  </span>
+
+                  @if (!taskAssigneeId) {
+                    <span class="font-semibold">✓</span>
+                  }
+                </button>
+
+                <!-- Accepted freelancer option -->
+                @if (assignedFreelancerId) {
+                  <button
+                    type="button"
+                    role="option"
+                    [attr.aria-selected]="taskAssigneeId === assignedFreelancerId"
+                    (click)="taskAssigneeId = assignedFreelancerId; isAssigneeDropdownOpen = false"
+                    class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition hover:bg-violet-50 hover:text-violet-700"
+                    [class.bg-violet-50]="taskAssigneeId === assignedFreelancerId"
+                    [class.text-violet-700]="taskAssigneeId === assignedFreelancerId"
+                  >
+                    <span class="flex min-w-0 items-center gap-2">
+                      <span class="h-2 w-2 shrink-0 rounded-full bg-emerald-500"></span>
+                      <span class="truncate">
+                        {{ assignedFreelancerName || 'Accepted freelancer' }}
+                      </span>
+                    </span>
+
+                    @if (taskAssigneeId === assignedFreelancerId) {
+                      <span class="ml-2 shrink-0 font-semibold">✓</span>
+                    }
+                  </button>
+                }
+              </div>
             }
-          </select>
+          </div>
         </div>
       </div>
       <div class="mt-5 flex flex-wrap gap-2.5">
