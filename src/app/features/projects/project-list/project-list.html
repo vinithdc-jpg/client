@@ -1,16 +1,20 @@
-<section class="grid gap-6">
+<section class="grid gap-6" aria-labelledby="dashboard-heading">
   <div class="flex items-start justify-between gap-5 max-[720px]:flex-col">
     <div>
+      <p class="mb-2 text-xs font-bold uppercase tracking-[0.14em] text-[#205b8f]">
+        DevCollab workspace
+      </p>
       <h1
         class="m-0 text-[clamp(1.7rem,3vw,2.15rem)] font-bold tracking-[-0.035em] text-[#172d46] dark:text-slate-100"
+        id="dashboard-heading"
       >
-        {{ user()?.role === 'client' ? 'Your projects' : 'Discover projects' }}
+        {{ user()?.role === 'client' ? 'Project dashboard' : 'Explore projects' }}
       </h1>
       <p class="mt-2 mb-0 text-[#657487] dark:text-slate-400">
         {{
           user()?.role === 'client'
-            ? 'Manage your projects and review freelancer proposals.'
-            : 'Find open work that matches your skills and submit a proposal.'
+            ? 'Keep your projects and client conversations in one place.'
+            : 'Find a project, check its details, and start a client conversation.'
         }}
       </p>
     </div>
@@ -21,40 +25,37 @@
         >Create a project</a
       >
     }
+    <form (ngSubmit)="applyFilters()">
+      <div class="relative text-gray-600 w-lg">
+        <input
+          type="search"
+          name="serch"
+          placeholder="Search"
+          class="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
+        />
+        <button type="submit" class="absolute right-0 top-0 mt-3 mr-4 [disable]= isloading">
+          <svg
+            class="h-4 w-4 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            version="1.1"
+            id="Capa_1"
+            x="0px"
+            y="0px"
+            viewBox="0 0 56.966 56.966"
+            style="enable-background: new 0 0 56.966 56.966"
+            xml:space="preserve"
+            width="512px"
+            height="512px"
+          >
+            <path
+              d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z"
+            />
+          </svg>
+        </button>
+      </div>
+    </form>
   </div>
-
-  <form
-    class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 flex flex-wrap items-end gap-3 dark:bg-slate-900 dark:border-slate-700"
-    (ngSubmit)="applyFilters()"
-  >
-    <div class="grid min-w-0 gap-1.75 flex-[1_1_260px]">
-      <label for="project-search">Search projects</label>
-      <input
-        id="project-search"
-        name="search"
-        type="search"
-        placeholder="Search titles and descriptions"
-        [(ngModel)]="search"
-      />
-    </div>
-    <div class="grid min-w-0 gap-1.75 flex-[0_1_190px]">
-      <label for="project-status">Status</label>
-      <select id="project-status" name="status" [(ngModel)]="status">
-        <option value="">All visible statuses</option>
-        <option value="open">Open</option>
-        <option value="in_progress">In progress</option>
-        <option value="completed">Completed</option>
-        <option value="cancelled">Cancelled</option>
-      </select>
-    </div>
-    <button
-      class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
-      type="submit"
-      [disabled]="isLoading"
-    >
-      Apply filters
-    </button>
-  </form>
 
   @if (errorMessage) {
     <p
@@ -65,93 +66,293 @@
     </p>
   }
 
-  @if (isLoading) {
-    <div
-      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 px-5 py-9.5 text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
-      role="status"
+  <div class="grid min-w-0 items-start gap-5 lg:grid-cols-[220px_minmax(0,1fr)_320px]">
+    <aside
+      class="grid gap-5 rounded-[14px] border border-[#e2e8f0] bg-white p-5 shadow-[0_5px_18px_rgb(26_48_75/4%)] dark:bg-slate-900 dark:border-slate-700"
+      aria-label="Project filters"
     >
-      Loading projects...
-    </div>
-  } @else if (projects.length > 0) {
-    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-4">
-      @for (project of projects; track project.id) {
-        <a
-          class="grid min-h-57.5 content-start gap-4 rounded-[14px] border border-[#e2e8f0] bg-white p-5.5 text-inherit shadow-[0_5px_18px_rgb(26_48_75/4%)] transition-[border-color,transform] duration-140 hover:-translate-y-0.5 hover:border-[#b6cbe0] dark:bg-slate-900 dark:border-slate-700 dark:hover:border-slate-500"
-          [routerLink]="['/projects', project.id]"
+      <div class="grid gap-3" role="group" aria-labelledby="status-filter-heading">
+        <h2
+          class="m-0 text-sm font-bold uppercase tracking-wide text-[#657487] dark:text-slate-400"
+          id="status-filter-heading"
         >
-          <div class="flex flex-wrap items-center justify-between gap-2.5">
-            <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100">
-              {{ project.title }}
-            </h2>
-            <span [class]="'status-badge status-' + project.status">
-              {{ project.status.replace('_', ' ') }}
-            </span>
-          </div>
-          <p class="m-0 line-clamp-3 leading-[1.55] text-[#637286] dark:text-slate-300">
-            {{ project.description }}
-          </p>
-          <div
-            class="flex flex-wrap gap-x-4.5 gap-y-2.5 text-[0.88rem] text-[#536479] dark:text-slate-300"
-          >
-            <span>Budget: {{ project.budget | currency }}</span>
-            @if (project.deadline) {
-              <span>Due {{ project.deadline | date: 'mediumDate' }}</span>
-            } @else {
-              <span>No deadline set</span>
-            }
-          </div>
-          @if (user()?.role === 'freelancer' && project.client_name) {
-            <small class="text-[#68778a] dark:text-slate-400"
-              >Posted by {{ project.client_name }}</small
-            >
-          }
-        </a>
-      }
-    </div>
+          Project status
+        </h2>
+        <label class="flex cursor-pointer items-center gap-2.5 text-sm">
+          <input
+            class="h-4! min-h-0! w-4! shrink-0! p-0! accent-[#205b8f]"
+            type="checkbox"
+            [checked]="status === ''"
+            (change)="setStatusFilter('')"
+          />
+          All projects
+        </label>
+        <label class="flex cursor-pointer items-center gap-2.5 text-sm">
+          <input
+            class="h-4! min-h-0! w-4! shrink-0! p-0! accent-[#205b8f]"
+            type="checkbox"
+            [checked]="status === 'open'"
+            (change)="setStatusFilter('open')"
+          />
+          Open
+        </label>
+        <label class="flex cursor-pointer items-center gap-2.5 text-sm">
+          <input
+            class="h-4! min-h-0! w-4! shrink-0! p-0! accent-[#205b8f]"
+            type="checkbox"
+            [checked]="status === 'in_progress'"
+            (change)="setStatusFilter('in_progress')"
+          />
+          In progress
+        </label>
+        <label class="flex cursor-pointer items-center gap-2.5 text-sm">
+          <input
+            class="h-4! min-h-0! w-4! shrink-0! p-0! accent-[#205b8f]"
+            type="checkbox"
+            [checked]="status === 'completed'"
+            (change)="setStatusFilter('completed')"
+          />
+          Completed
+        </label>
+        <label class="flex cursor-pointer items-center gap-2.5 text-sm">
+          <input
+            class="h-4! min-h-0! w-4! shrink-0! p-0! accent-[#205b8f]"
+            type="checkbox"
+            [checked]="status === 'cancelled'"
+            (change)="setStatusFilter('cancelled')"
+          />
+          Cancelled
+        </label>
+      </div>
+    </aside>
 
-    <nav
-      class="flex flex-wrap items-center justify-center gap-4 text-[#607085] dark:text-slate-400"
-      aria-label="Project result pages"
-    >
-      <button
-        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
-        type="button"
-        (click)="previousPage()"
-        [disabled]="offset === 0 || isLoading"
-      >
-        Previous
-      </button>
-      <span>Page {{ pageNumber }} of {{ pageCount }}</span>
-      <button
-        class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-white text-[#34465b] hover:enabled:bg-[#f4f7fa] dark:bg-slate-900 dark:border-slate-600 dark:text-slate-300"
-        type="button"
-        (click)="nextPage()"
-        [disabled]="offset + limit >= total || isLoading"
-      >
-        Next
-      </button>
-    </nav>
-  } @else if (!errorMessage) {
-    <div
-      class="rounded-[14px] border border-[#e2e8f0] bg-white p-6 shadow-[0_5px_18px_rgb(26_48_75/4%)] max-[720px]:p-4.5 px-5 py-9.5 text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
-    >
-      <h2 class="m-0 text-[1.08rem] font-bold text-[#1b334f] dark:text-slate-100 mb-2">
-        No projects found
-      </h2>
-      <p class="m-0 text-[#637286] dark:text-slate-300">
-        {{
-          user()?.role === 'client'
-            ? 'Create a project to start receiving proposals.'
-            : 'Try adjusting your filters, or check back for new opportunities.'
-        }}
-      </p>
-      @if (user()?.role === 'client') {
-        <a
-          class="inline-flex min-h-10 cursor-pointer items-center justify-center gap-1.75 rounded-lg border border-transparent px-3.5 py-2.25 text-[0.9rem] font-[650] transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60 bg-[#205b8f] text-white hover:enabled:bg-[#174b79]"
-          routerLink="/projects/new"
-          >Create a project</a
+    <section class="grid min-w-0 content-start gap-4" aria-labelledby="project-list-heading">
+      <div class="flex items-center justify-between gap-3">
+        <h2
+          class="m-0 text-lg font-bold text-[#1b334f] dark:text-slate-100"
+          id="project-list-heading"
         >
+          Project details
+        </h2>
+        @if (!isLoading) {
+          <span class="text-sm text-[#68778a] dark:text-slate-400">{{ total }} projects</span>
+        }
+      </div>
+
+      @if (isLoading) {
+        <div
+          class="rounded-[14px] border border-[#e2e8f0] bg-white p-8 text-center text-[#68778a] dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400"
+          role="status"
+        >
+          Loading projects...
+        </div>
+      } @else if (projects.length > 0) {
+        <div class="grid gap-3">
+          @for (project of projects; track project.id) {
+            <article
+              class="grid gap-3 rounded-[14px] border border-[#e2e8f0] bg-white p-5 shadow-[0_5px_18px_rgb(26_48_75/4%)] dark:bg-slate-900 dark:border-slate-700"
+            >
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <div class="grid gap-1">
+                  <h3 class="m-0 text-base font-bold text-[#1b334f] dark:text-slate-100">
+                    {{ project.title }}
+                  </h3>
+                  @if (project.client_name) {
+                    <span class="text-sm text-[#68778a] dark:text-slate-400">
+                      {{ user()?.role === 'client' ? 'Project owner' : 'Client' }}:
+                      {{ project.client_name }}
+                    </span>
+                  }
+                </div>
+                <span [class]="'status-badge status-' + project.status">
+                  {{ project.status.replace('_', ' ') }}
+                </span>
+              </div>
+              <p class="m-0 line-clamp-3 leading-[1.55] text-[#637286] dark:text-slate-300">
+                {{ project.description }}
+              </p>
+              <div
+                class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-[#536479] dark:text-slate-300"
+              >
+                <span>Budget: {{ project.budget | currency }}</span>
+                <span>
+                  Due
+                  {{ project.deadline ? (project.deadline | date: 'mediumDate') : 'No deadline' }}
+                </span>
+              </div>
+              <div
+                class="flex flex-wrap items-center justify-between gap-3 border-t border-[#e2e8f0] pt-3 dark:border-slate-700"
+              >
+                <span class="text-xs text-[#68778a] dark:text-slate-400">
+                  Posted {{ project.created_at | date: 'mediumDate' }}
+                </span>
+                <div class="flex items-center gap-2">
+                  @if (user()?.role === 'freelancer' && project.client_name) {
+                    <button
+                      class="rounded-lg border border-[#dbe3eb] px-3 py-2 text-sm font-semibold text-[#34465b] hover:bg-[#f4f7fa] dark:border-slate-600 dark:text-slate-300"
+                      type="button"
+                      (click)="openChat(project.client_id)"
+                    >
+                      Message client
+                    </button>
+                  }
+                  <a
+                    class="rounded-lg bg-[#205b8f] px-3 py-2 text-sm font-semibold text-white hover:bg-[#174b79]"
+                    [routerLink]="['/projects', project.id]"
+                  >
+                    View project
+                  </a>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+
+        <nav
+          class="flex flex-wrap items-center justify-center gap-4 text-sm text-[#607085] dark:text-slate-400"
+          aria-label="Project result pages"
+        >
+          <button
+            class="rounded-lg border border-[#e2e8f0] bg-white px-3 py-2 font-semibold text-[#34465b] hover:bg-[#f4f7fa] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-300"
+            type="button"
+            (click)="previousPage()"
+            [disabled]="offset === 0 || isLoading"
+          >
+            Previous
+          </button>
+          <span>Page {{ pageNumber }} of {{ pageCount }}</span>
+          <button
+            class="rounded-lg border border-[#e2e8f0] bg-white px-3 py-2 font-semibold text-[#34465b] hover:bg-[#f4f7fa] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-300"
+            type="button"
+            (click)="nextPage()"
+            [disabled]="offset + limit >= total || isLoading"
+          >
+            Next
+          </button>
+        </nav>
+      } @else if (!errorMessage) {
+        <div
+          class="rounded-[14px] border border-[#e2e8f0] bg-white p-8 text-center dark:bg-slate-900 dark:border-slate-700"
+        >
+          <h3 class="m-0 mb-2 text-base font-bold text-[#1b334f] dark:text-slate-100">
+            No projects found
+          </h3>
+          <p class="m-0 text-sm text-[#637286] dark:text-slate-300">
+            {{
+              user()?.role === 'client'
+                ? 'Create a project to start receiving proposals.'
+                : 'Try another search or status filter.'
+            }}
+          </p>
+          @if (user()?.role === 'client') {
+            <a
+              class="mt-4 inline-flex rounded-lg bg-[#205b8f] px-3 py-2 text-sm font-semibold text-white hover:bg-[#174b79]"
+              routerLink="/projects/new"
+            >
+              Create a project
+            </a>
+          }
+        </div>
       }
-    </div>
-  }
+    </section>
+
+    <section
+      class="grid min-h-130 min-w-0 grid-rows-[auto_auto_1fr_auto] overflow-hidden rounded-[14px] border border-[#e2e8f0] bg-white shadow-[0_5px_18px_rgb(26_48_75/4%)] dark:bg-slate-900 dark:border-slate-700 lg:sticky lg:top-20"
+      aria-labelledby="chat-heading"
+    >
+      <div class="border-b border-[#e2e8f0] p-4 dark:border-slate-700">
+        <div class="flex items-center justify-between gap-2">
+          <h2 class="m-0 text-base font-bold text-[#1b334f] dark:text-slate-100" id="chat-heading">
+            Client chat
+          </h2>
+          <span
+            class="rounded-full bg-[#eef2ff] px-2 py-1 text-[0.68rem] font-bold uppercase tracking-wide text-[#205b8f]"
+          >
+            Preview
+          </span>
+        </div>
+        <p class="mb-0 mt-1 text-xs leading-relaxed text-[#68778a] dark:text-slate-400">
+          Demo only — messages stay in this page and are not delivered.
+        </p>
+      </div>
+
+      @if (chatContacts.length > 0) {
+        <div class="border-b border-[#e2e8f0] p-3 dark:border-slate-700">
+          <label class="sr-only" for="chat-contact">Choose a client</label>
+          <select
+            class="min-h-10! py-2! text-sm"
+            id="chat-contact"
+            name="chatContact"
+            [ngModel]="chatContactId"
+            (ngModelChange)="openChat($event)"
+          >
+            @for (contact of chatContacts; track contact.id) {
+              <option [value]="contact.id">{{ contact.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div
+          class="grid content-start gap-3 overflow-y-auto p-4"
+          aria-live="polite"
+          aria-label="Conversation messages"
+        >
+          @if (activeMessages.length === 0) {
+            <p class="m-0 py-8 text-center text-sm text-[#68778a] dark:text-slate-400">
+              Start a conversation with {{ selectedChatContact?.name }}.
+            </p>
+          } @else {
+            @for (message of activeMessages; track $index) {
+              <div
+                class="grid max-w-[90%] gap-1 rounded-xl px-3 py-2.5 text-sm"
+                [class.ml-auto]="message.fromCurrentUser"
+                [class.bg-indigo-50]="message.fromCurrentUser"
+                [class.text-indigo-950]="message.fromCurrentUser"
+                [class.mr-auto]="!message.fromCurrentUser"
+                [class.bg-slate-100]="!message.fromCurrentUser"
+                [class.text-slate-800]="!message.fromCurrentUser"
+              >
+                <span class="font-semibold">{{
+                  message.fromCurrentUser ? 'You' : message.sender
+                }}</span>
+                <p class="m-0 whitespace-pre-wrap wrap-break-word">{{ message.text }}</p>
+                <time class="text-[0.68rem] opacity-70" [attr.datetime]="message.sentAt">
+                  {{ message.sentAt | date: 'shortTime' }}
+                </time>
+              </div>
+            }
+          }
+        </div>
+
+        <form
+          class="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-2 border-t border-[#e2e8f0] p-3 dark:border-slate-700"
+          (ngSubmit)="sendMessage()"
+        >
+          <label class="sr-only" for="chat-message">Write a message</label>
+          <textarea
+            class="min-h-10! resize-none! py-2!"
+            id="chat-message"
+            name="message"
+            rows="2"
+            maxlength="2000"
+            placeholder="Write a message..."
+            [(ngModel)]="messageDraft"
+          ></textarea>
+          <button
+            class="inline-flex min-h-10 items-center justify-center rounded-lg bg-[#205b8f] px-3 text-sm font-semibold text-white hover:bg-[#174b79] disabled:cursor-not-allowed disabled:opacity-50"
+            type="submit"
+            [disabled]="!messageDraft.trim()"
+          >
+            Send
+          </button>
+        </form>
+      } @else {
+        <div class="grid place-content-center p-5 text-center">
+          <p class="m-0 text-sm text-[#68778a] dark:text-slate-400">
+            Client conversations will appear here when project contacts are available.
+          </p>
+        </div>
+      }
+    </section>
+  </div>
 </section>
