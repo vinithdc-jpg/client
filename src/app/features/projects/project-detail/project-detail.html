@@ -128,7 +128,12 @@
           </div>
           <div class="grid min-w-0 gap-1.75">
             <label for="edit-deadline">Deadline (optional)</label>
-            <input id="edit-deadline" name="deadline" type="date" [(ngModel)]="deadline" />
+            <app-date-picker
+              inputId="edit-deadline"
+              name="deadline"
+              placeholder="Choose deadline"
+              [(ngModel)]="deadline"
+            />
           </div>
         </div>
         <div class="mt-5 flex flex-wrap gap-2.5">

@@ -98,12 +98,10 @@
                   >
                   <div class="relative w-full">
                     <div class="relative">
-                      <input
-                        [id]="'edit-milestone-date-' + milestone.id"
+                      <app-date-picker
+                        [inputId]="'edit-milestone-date-' + milestone.id"
                         name="editMilestoneDueDate"
-                        type="date"
                         [(ngModel)]="editMilestoneDueDate"
-                        class="milestone-date-input"
                       />
                     </div>
                   </div>
@@ -309,10 +307,9 @@
         </div>
         <div class="grid min-w-0 gap-1.75">
           <label for="new-milestone-date">Due date (optional)</label>
-          <input
-            id="new-milestone-date"
+          <app-date-picker
+            inputId="new-milestone-date"
             name="milestoneDueDate"
-            type="date"
             [(ngModel)]="milestoneDueDate"
           />
         </div>
@@ -390,7 +387,11 @@
         </div>
         <div class="grid min-w-0 gap-1.75">
           <label for="new-task-date">Due date (optional)</label>
-          <input id="new-task-date" name="taskDueDate" type="date" [(ngModel)]="taskDueDate" />
+          <app-date-picker
+            inputId="new-task-date"
+            name="taskDueDate"
+            [(ngModel)]="taskDueDate"
+          />
         </div>
         <div class="grid min-w-0 gap-1.75">
           <label for="new-task-milestone">Milestone (optional)</label>
@@ -672,11 +673,9 @@
                       }
                     </select>
                     <label [for]="'edit-task-date-' + task.id">Due date</label>
-                    <input
-                      class="min-h-9.5 rounded-[7px] px-2.5 py-2"
-                      [id]="'edit-task-date-' + task.id"
+                    <app-date-picker
+                      [inputId]="'edit-task-date-' + task.id"
                       [name]="'edit-task-date-' + task.id"
-                      type="date"
                       [(ngModel)]="editTaskDueDate"
                     />
                     <label [for]="'edit-task-milestone-' + task.id">Milestone</label>

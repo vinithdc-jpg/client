@@ -64,7 +64,12 @@
 
       <div class="grid min-w-0 gap-1.75">
         <label for="project-deadline">Deadline (optional)</label>
-        <input id="project-deadline" name="deadline" type="date" [(ngModel)]="deadline" />
+        <app-date-picker
+          inputId="project-deadline"
+          name="deadline"
+          placeholder="Choose deadline"
+          [(ngModel)]="deadline"
+        />
       </div>
     </div>
 

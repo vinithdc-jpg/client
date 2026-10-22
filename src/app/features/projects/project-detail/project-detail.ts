@@ -17,6 +17,7 @@ import type {
 } from '../../../../core/services/project.service';
 import { apiErrorMessage } from '../../../../core/utils/api-error-message';
 import { ProjectWorkspaceComponent } from '../project-workspace/project-workspace';
+import { DatePickerComponent } from '../../../shared/date-picker/date-picker';
 
 @Component({
   selector: 'app-project-detail',
@@ -24,6 +25,7 @@ import { ProjectWorkspaceComponent } from '../project-workspace/project-workspac
   imports: [
     CurrencyPipe,
     DatePipe,
+    DatePickerComponent,
     FormsModule,
     ProjectWorkspaceComponent,
     RouterLink,

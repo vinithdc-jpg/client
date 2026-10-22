@@ -23,6 +23,7 @@ import type {
   TaskStatus,
 } from '../../../../core/services/project.service';
 import { apiErrorMessage } from '../../../../core/utils/api-error-message';
+import { DatePickerComponent } from '../../../shared/date-picker/date-picker';
 
 type WorkspaceRole = 'client' | 'freelancer';
 
@@ -37,7 +38,7 @@ const taskPriorities: TaskPriority[] = ['low', 'medium', 'high', 'urgent'];
 @Component({
   selector: 'app-project-workspace',
   standalone: true,
-  imports: [CurrencyPipe, DatePipe, FormsModule],
+  imports: [CurrencyPipe, DatePipe, DatePickerComponent, FormsModule],
   templateUrl: './project-workspace.html',
 })
 export class ProjectWorkspaceComponent implements OnChanges {
@@ -68,6 +69,8 @@ export class ProjectWorkspaceComponent implements OnChanges {
   isSaving = false;
   isCreatingTask = false;
   isCreatingMilestone = false;
+  isMilestoneDropdownOpen = false;
+  isAssigneeDropdownOpen = false;
   errorMessage = '';
   successMessage = '';
   activeTaskCommentsId = '';

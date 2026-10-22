@@ -3,11 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ProjectService } from '../../../../core/services/project.service';
 import { apiErrorMessage } from '../../../../core/utils/api-error-message';
+import { DatePickerComponent } from '../../../shared/date-picker/date-picker';
 
 @Component({
   selector: 'app-project-create',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [DatePickerComponent, FormsModule, RouterLink],
   templateUrl: './project-create.html',
 })
 export class ProjectCreateComponent {
