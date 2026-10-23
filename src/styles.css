@@ -2,6 +2,79 @@
 
 @source "./app";
 
+@theme {
+  --color-landing-ink: #17213a;
+  --color-landing-muted: #69748a;
+  --color-landing-purple: #6258dc;
+  --color-landing-paper: #f7f7f4;
+  --color-landing-17213a: #17213a;
+  --color-landing-424c61: #424c61;
+  --color-landing-5147ca: #5147ca;
+  --color-landing-527e5a: #527e5a;
+  --color-landing-54876d: #54876d;
+  --color-landing-58617a: #58617a;
+  --color-landing-596cad: #596cad;
+  --color-landing-65a773: #65a773;
+  --color-landing-759c7d: #759c7d;
+  --color-landing-76b79d: #76b79d;
+  --color-landing-777f8f: #777f8f;
+  --color-landing-8178d7: #8178d7;
+  --color-landing-878b9b: #878b9b;
+  --color-landing-8992a6: #8992a6;
+  --color-landing-8e87df: #8e87df;
+  --color-landing-9296aa: #9296aa;
+  --color-landing-9298a8: #9298a8;
+  --color-landing-aeb5c5: #aeb5c5;
+  --color-landing-c4c5d4: #c4c5d4;
+  --color-landing-d47a4e: #d47a4e;
+  --color-landing-d4d8e2: #d4d8e2;
+  --color-landing-d58469: #d58469;
+  --color-landing-d5d4e4: #d5d4e4;
+  --color-landing-d5d5df: #d5d5df;
+  --color-landing-d88c64: #d88c64;
+  --color-landing-dc8a5e: #dc8a5e;
+  --color-landing-dfe0e8: #dfe0e8;
+  --color-landing-e1a66f: #e1a66f;
+  --color-landing-e2e3e8: #e2e3e8;
+  --color-landing-e5a44b: #e5a44b;
+  --color-landing-e7e7ef: #e7e7ef;
+  --color-landing-e9f4eb: #e9f4eb;
+  --color-landing-eeedf1: #eeedf1;
+  --color-landing-eeedff: #eeedff;
+  --color-landing-f0eff2: #f0eff2;
+  --color-landing-f0efff: #f0efff;
+  --color-landing-f0f0f2: #f0f0f2;
+  --color-landing-f0f8f4: #f0f8f4;
+  --color-landing-f6f4ff: #f6f4ff;
+  --color-landing-fff0e7: #fff0e7;
+  --color-landing-fff6ef: #fff6ef;
+  --animate-word-enter: word-enter 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-float: float 5s ease-in-out infinite;
+
+  @keyframes word-enter {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-7px);
+    }
+  }
+}
+
 @layer base {
   :root {
     --color-base: #fff8f8;

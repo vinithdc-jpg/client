@@ -1,64 +1,227 @@
 <header
-  class="sticky top-0 z-50 flex min-h-14 flex-wrap items-center gap-x-6 gap-y-2 border-b border-slate-200 bg-[#111827] px-4 py-2 sm:px-6 lg:flex-nowrap lg:px-[5vw] dark:border-slate-700"
+  #navbar
+  class="sticky top-4 z-50 mx-auto mb-4 h-[60px] w-[calc(100%-2rem)] max-w-[1120px] px-0.5"
 >
-  <!-- Logo -->
-  <a class="inline-flex shrink-0 items-center" routerLink="/projects" aria-label="DevCollab home">
-    <img class="h-7 w-auto max-w-36 object-contain sm:h-8" src="/image.png" alt="DevCollab Logo" />
-  </a>
-
-  @if (authService.currentUser(); as user) {
-    <!-- Navigation -->
-    <nav
-      class="order-3 flex min-w-0 w-full flex-1 items-center gap-1 overflow-x-auto whitespace-nowrap pb-1 sm:gap-2 lg:order-0 lg:w-auto lg:pb-0"
-      aria-label="Main navigation"
+  <div
+    class="relative flex h-full items-center justify-between gap-3 rounded-full border border-slate-200/80 bg-white/85 px-3 shadow-[0_10px_35px_rgba(15,23,42,0.10)] backdrop-blur-xl transition-[padding,background-color,box-shadow,transform] duration-300 dark:border-slate-700/80 dark:bg-slate-900/85 dark:shadow-[0_10px_35px_rgba(2,6,23,0.32)] sm:px-4 motion-reduce:transition-none"
+    [style.padding-block.px]="isScrolled() ? 4 : 8"
+    [ngClass]="{
+      'bg-white/95': isScrolled(),
+      'dark:bg-slate-900/95': isScrolled(),
+      'shadow-[0_12px_40px_rgba(15,23,42,0.16)]': isScrolled(),
+      'dark:shadow-[0_12px_40px_rgba(2,6,23,0.45)]': isScrolled(),
+      'scale-[0.98]': isScrolled()
+    }"
+  >
+    <a
+      class="inline-flex shrink-0 items-center rounded-full px-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500"
+      [routerLink]="authService.currentUser() ? '/projects' : '/'"
+      aria-label="DevCollab home"
+      (click)="closeMobileMenu()"
     >
-      <a
-        class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-indigo-700 hover:text-white"
-        routerLink="/projects"
-        routerLinkActive="bg-indigo-600 !text-white"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
-        Projects
-      </a>
+      <img
+        class="h-7 w-auto max-w-32 object-contain sm:h-8 sm:max-w-36"
+        src="/image.png"
+        alt="DevCollab"
+      />
+    </a>
 
-      @if (user.role === 'client') {
+    @if (authService.currentUser(); as user) {
+      <nav
+        #desktopNav
+        class="relative hidden items-center rounded-full bg-slate-100/70 p-1 dark:bg-slate-800/70 md:flex"
+        aria-label="Main navigation"
+        (mouseleave)="onNavMouseLeave(desktopNav)"
+        (focusin)="onNavFocusIn($event, desktopNav)"
+        (focusout)="onNavFocusOut($event, desktopNav)"
+      >
+        <span
+          class="pointer-events-none absolute inset-y-1 left-0 rounded-full bg-indigo-600 shadow-[0_2px_8px_rgba(79,70,229,0.28)] transition-[transform,width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+          [style.transform]="'translate3d(' + indicatorX() + 'px, 0, 0)'"
+          [style.width.px]="indicatorWidth()"
+          [style.opacity]="indicatorWidth() > 0 ? 1 : 0"
+          aria-hidden="true"
+        ></span>
+
         <a
-          class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-indigo-700 hover:text-white"
-          routerLink="/projects/new"
-          routerLinkActive="bg-indigo-600 !text-white"
+          #projectsNavItem
+          class="relative z-[1] whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:text-slate-300 dark:hover:text-white"
+          routerLink="/projects"
+          routerLinkActive="!text-white"
           [routerLinkActiveOptions]="{ exact: true }"
+          ariaCurrentWhenActive="page"
+          data-route="/projects"
+          (isActiveChange)="onRouteLinkActiveChange(0, $event, projectsNavItem, desktopNav)"
+          (mouseenter)="onNavItemHover(0, projectsNavItem, desktopNav)"
+          (focus)="onNavItemHover(0, projectsNavItem, desktopNav)"
+          [ngClass]="{ '!text-white': hoveredIndex() === 0 }"
         >
-          Create project
+          Projects
         </a>
+
+        @if (user.role === 'client') {
+          <a
+            #secondaryNavItem
+            class="relative z-[1] whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:text-slate-300 dark:hover:text-white"
+            routerLink="/projects/new"
+            routerLinkActive="!text-white"
+            [routerLinkActiveOptions]="{ exact: true }"
+            ariaCurrentWhenActive="page"
+            data-route="/projects/new"
+            (isActiveChange)="onRouteLinkActiveChange(1, $event, secondaryNavItem, desktopNav)"
+            (mouseenter)="onNavItemHover(1, secondaryNavItem, desktopNav)"
+            (focus)="onNavItemHover(1, secondaryNavItem, desktopNav)"
+            [ngClass]="{ '!text-white': hoveredIndex() === 1 }"
+          >
+            Create project
+          </a>
+        } @else {
+          <a
+            #secondaryNavItem
+            class="relative z-[1] whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:text-slate-300 dark:hover:text-white"
+            routerLink="/bids"
+            routerLinkActive="!text-white"
+            [routerLinkActiveOptions]="{ exact: true }"
+            ariaCurrentWhenActive="page"
+            data-route="/bids"
+            (isActiveChange)="onRouteLinkActiveChange(1, $event, secondaryNavItem, desktopNav)"
+            (mouseenter)="onNavItemHover(1, secondaryNavItem, desktopNav)"
+            (focus)="onNavItemHover(1, secondaryNavItem, desktopNav)"
+            [ngClass]="{ '!text-white': hoveredIndex() === 1 }"
+          >
+            My proposals
+          </a>
+        }
+      </nav>
+
+      <div class="hidden shrink-0 items-center gap-3 md:flex">
+        <span
+          class="hidden max-w-32 truncate text-sm font-medium text-slate-600 dark:text-slate-300 lg:block xl:max-w-40"
+          [title]="user.name"
+        >
+          {{ user.name }}
+        </span>
+        <button
+          type="button"
+          class="inline-flex min-h-9 items-center justify-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:border-slate-600 dark:text-slate-200 dark:hover:border-indigo-400/50 dark:hover:bg-indigo-500/15 dark:hover:text-indigo-200"
+          (click)="logout()"
+        >
+          Log out
+        </button>
+      </div>
+    } @else {
+      <nav class="hidden items-center gap-2 md:flex" aria-label="Account navigation">
+        <a
+          class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+          routerLink="/login"
+        >
+          Log in
+        </a>
+        <a
+          class="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+          routerLink="/register"
+        >
+          Get started
+        </a>
+      </nav>
+    }
+
+    <button
+      #menuToggle
+      type="button"
+      class="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 md:hidden"
+      [attr.aria-expanded]="mobileMenuOpen()"
+      aria-controls="mobile-navigation"
+      aria-label="Toggle navigation menu"
+      (click)="toggleMobileMenu(menuToggle)"
+    >
+      @if (mobileMenuOpen()) {
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
       } @else {
-        <a
-          class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-indigo-700 hover:text-white"
-          routerLink="/bids"
-          routerLinkActive="bg-indigo-600 !text-white"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          My proposals
-        </a>
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
       }
-    </nav>
+    </button>
 
-    <!-- User actions -->
-    <div class="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
-      <span class="hidden max-w-36 truncate text-sm text-slate-300 md:block" [title]="user.name">
-        {{ user.name }}
-      </span>
-
-      <button
-        type="button"
-        class="inline-flex min-h-9 items-center justify-center rounded-lg border border-slate-600 px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 disabled:cursor-not-allowed disabled:opacity-60"
-        (click)="logout()"
+    @if (mobileMenuOpen()) {
+      <nav
+        id="mobile-navigation"
+        class="absolute left-0 right-0 top-[calc(100%+0.6rem)] grid gap-1 rounded-2xl border border-slate-200/90 bg-white/95 p-2 shadow-[0_16px_45px_rgba(15,23,42,0.16)] backdrop-blur-xl dark:border-slate-700/90 dark:bg-slate-900/95 md:hidden"
+        aria-label="Mobile navigation"
       >
-        Log out
-      </button>
-    </div>
-  }
+        @if (authService.currentUser(); as user) {
+          <a
+            class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-2 focus-visible:outline-indigo-500 dark:text-slate-200 dark:hover:bg-indigo-500/15 dark:hover:text-indigo-200"
+            routerLink="/projects"
+            routerLinkActive="bg-indigo-50 !text-indigo-700 dark:bg-indigo-500/20 dark:!text-indigo-200"
+            [routerLinkActiveOptions]="{ exact: true }"
+            ariaCurrentWhenActive="page"
+            (click)="closeMobileMenu()"
+          >
+            Projects
+          </a>
+          @if (user.role === 'client') {
+            <a
+              class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-2 focus-visible:outline-indigo-500 dark:text-slate-200 dark:hover:bg-indigo-500/15 dark:hover:text-indigo-200"
+              routerLink="/projects/new"
+              routerLinkActive="bg-indigo-50 !text-indigo-700 dark:bg-indigo-500/20 dark:!text-indigo-200"
+              [routerLinkActiveOptions]="{ exact: true }"
+              ariaCurrentWhenActive="page"
+              (click)="closeMobileMenu()"
+            >
+              Create project
+            </a>
+          } @else {
+            <a
+              class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-2 focus-visible:outline-indigo-500 dark:text-slate-200 dark:hover:bg-indigo-500/15 dark:hover:text-indigo-200"
+              routerLink="/bids"
+              routerLinkActive="bg-indigo-50 !text-indigo-700 dark:bg-indigo-500/20 dark:!text-indigo-200"
+              [routerLinkActiveOptions]="{ exact: true }"
+              ariaCurrentWhenActive="page"
+              (click)="closeMobileMenu()"
+            >
+              My proposals
+            </a>
+          }
+          <div class="my-1 border-t border-slate-200 dark:border-slate-700"></div>
+          <span class="truncate px-4 py-2 text-sm text-slate-500 dark:text-slate-400">{{ user.name }}</span>
+          <button
+            type="button"
+            class="rounded-xl px-4 py-3 text-left text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-indigo-500 dark:text-slate-200 dark:hover:bg-slate-800"
+            (click)="logout()"
+          >
+            Log out
+          </button>
+        } @else {
+          <a
+            class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-2 focus-visible:outline-indigo-500 dark:text-slate-200 dark:hover:bg-indigo-500/15 dark:hover:text-indigo-200"
+            routerLink="/login"
+            (click)="closeMobileMenu()"
+          >
+            Log in
+          </a>
+          <a
+            class="rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+            routerLink="/register"
+            (click)="closeMobileMenu()"
+          >
+            Get started
+          </a>
+        }
+      </nav>
+    }
+  </div>
 </header>
 
-<main class="mx-auto min-h-[calc(100vh-56px)] w-[92%] max-w-295 py-7 sm:py-8 lg:py-10">
-  <router-outlet />
-</main>
+@if (router.url === '/') {
+  <main class="min-h-[calc(100vh-56px)]">
+    <router-outlet />
+  </main>
+} @else {
+  <main class="mx-auto min-h-[calc(100vh-56px)] w-[92%] max-w-295 py-7 sm:py-8 lg:py-10">
+    <router-outlet />
+  </main>
+}

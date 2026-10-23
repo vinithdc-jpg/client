@@ -30,13 +30,15 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('redirects the root URL to the sign-in page', async () => {
+  it('shows the landing page at the root URL', async () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     await TestBed.inject(Router).navigateByUrl('/');
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Sign in to DevCollab');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Find your people.');
+    expect(compiled.querySelector('#services')).toBeTruthy();
+    expect(compiled.querySelector('#reviews')).toBeTruthy();
   });
 });

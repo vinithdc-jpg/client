@@ -12,7 +12,8 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'projects',
+    loadComponent: () =>
+      import('./features/landing/landing').then((component) => component.LandingComponent),
   },
   {
     path: 'login',
@@ -44,6 +45,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'projects',
+    redirectTo: '',
   },
 ];
