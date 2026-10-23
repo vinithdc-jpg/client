@@ -1,6 +1,6 @@
 <header
   #navbar
-  class="sticky top-4 z-50 mx-auto mb-4 h-[60px] w-[calc(100%-2rem)] max-w-[1120px] px-0.5"
+  class="sticky top-4 z-50 mx-auto mb-4 h-15 w-[calc(100%-2rem)] max-w-200 px-0.5"
 >
   <div
     class="relative flex h-full items-center justify-between gap-3 rounded-full border border-slate-200/80 bg-white/85 px-3 shadow-[0_10px_35px_rgba(15,23,42,0.10)] backdrop-blur-xl transition-[padding,background-color,box-shadow,transform] duration-300 dark:border-slate-700/80 dark:bg-slate-900/85 dark:shadow-[0_10px_35px_rgba(2,6,23,0.32)] sm:px-4 motion-reduce:transition-none"
@@ -45,7 +45,7 @@
 
         <a
           #projectsNavItem
-          class="relative z-[1] whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:text-slate-300 dark:hover:text-white"
+          class="relative z-1 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:text-slate-300 dark:hover:text-white"
           routerLink="/projects"
           routerLinkActive="!text-white"
           [routerLinkActiveOptions]="{ exact: true }"
@@ -54,7 +54,7 @@
           (isActiveChange)="onRouteLinkActiveChange(0, $event, projectsNavItem, desktopNav)"
           (mouseenter)="onNavItemHover(0, projectsNavItem, desktopNav)"
           (focus)="onNavItemHover(0, projectsNavItem, desktopNav)"
-          [ngClass]="{ '!text-white': hoveredIndex() === 0 }"
+          [ngClass]="{ 'text-white!': hoveredIndex() === 0 }"
         >
           Projects
         </a>
@@ -62,7 +62,7 @@
         @if (user.role === 'client') {
           <a
             #secondaryNavItem
-            class="relative z-[1] whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:text-slate-300 dark:hover:text-white"
+            class="relative z-1 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:text-slate-300 dark:hover:text-white"
             routerLink="/projects/new"
             routerLinkActive="!text-white"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -71,14 +71,14 @@
             (isActiveChange)="onRouteLinkActiveChange(1, $event, secondaryNavItem, desktopNav)"
             (mouseenter)="onNavItemHover(1, secondaryNavItem, desktopNav)"
             (focus)="onNavItemHover(1, secondaryNavItem, desktopNav)"
-            [ngClass]="{ '!text-white': hoveredIndex() === 1 }"
+            [ngClass]="{ 'text-white!': hoveredIndex() === 1 }"
           >
             Create project
           </a>
         } @else {
           <a
             #secondaryNavItem
-            class="relative z-[1] whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:text-slate-300 dark:hover:text-white"
+            class="relative z-1 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:text-slate-300 dark:hover:text-white"
             routerLink="/bids"
             routerLinkActive="!text-white"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -87,7 +87,7 @@
             (isActiveChange)="onRouteLinkActiveChange(1, $event, secondaryNavItem, desktopNav)"
             (mouseenter)="onNavItemHover(1, secondaryNavItem, desktopNav)"
             (focus)="onNavItemHover(1, secondaryNavItem, desktopNav)"
-            [ngClass]="{ '!text-white': hoveredIndex() === 1 }"
+            [ngClass]="{ 'text-white!': hoveredIndex() === 1 }"
           >
             My proposals
           </a>
