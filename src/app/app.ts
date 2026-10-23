@@ -1,19 +1,6 @@
 import { NgClass } from '@angular/common';
-import {
-  AfterViewInit,
-  Component,
-  HostListener,
-  OnDestroy,
-  inject,
-  signal,
-} from '@angular/core';
-import {
-  NavigationEnd,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
+import { AfterViewInit, Component, HostListener, OnDestroy, inject, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { AuthService } from '../core/services/auth.service';
 
@@ -78,11 +65,7 @@ export class App implements AfterViewInit, OnDestroy {
     this.mobileMenuOpen.set(false);
   }
 
-  protected onNavItemHover(
-    index: number,
-    item: HTMLAnchorElement,
-    nav: HTMLElement,
-  ): void {
+  protected onNavItemHover(index: number, item: HTMLAnchorElement, nav: HTMLElement): void {
     this.hoveredIndex.set(index);
     this.hoveredNavItem = item;
     if (this.navContainer !== nav) {
