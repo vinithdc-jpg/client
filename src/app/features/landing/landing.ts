@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ScrollRevealDirective } from '../../shared/scroll-reveal.directive';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, ScrollRevealDirective],
   templateUrl: './landing.html',
   host: { class: 'block' },
 })

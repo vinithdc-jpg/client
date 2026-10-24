@@ -3,33 +3,31 @@
     class="relative grid min-h-157.5 grid-cols-1 items-center gap-[5vw] bg-landing-paper px-[7vw] py-15.5 pb-20 md:grid-cols-[minmax(0,1.04fr)_minmax(350px,0.96fr)] md:px-[max(7vw,calc((100vw-1240px)/2))] md:py-19 md:pb-25 max-[900px]:md:min-h-0 max-[900px]:md:grid-cols-[1fr_0.8fr] max-[900px]:md:gap-3.75 max-[900px]:md:pt-18.75 max-[900px]:md:pb-23.75 max-[640px]:grid-cols-1"
   >
     <div class="relative z-1 max-w-155">
-      <p class="mb-5 flex items-center gap-2.25 text-[0.72rem] font-extrabold tracking-[0.12em] text-landing-58617a">
-        <span class="size-2 rounded-full bg-landing-76b79d shadow-[0_0_0_4px_#76b79d22]"></span>
-        A better way to work together
-      </p>
       <h1 class="m-0 text-[clamp(3rem,13vw,4.7rem)] font-[750] leading-[1.02] tracking-[-0.075em] md:text-[clamp(3.2rem,6.1vw,5.8rem)] max-[900px]:md:text-[clamp(3rem,7vw,4.5rem)]">
-        Find your people.<br />
-        Make your
-        <span class="inline-block min-w-[5.8ch] whitespace-nowrap text-landing-purple" aria-live="polite">
-          @for (word of [activeWord]; track word) {
-            <span class="inline-block animate-word-enter motion-reduce:animate-none">{{ word }}</span>
-          }
+        <span class="hero-line hero-line--first">Find your people.</span>
+        <span class="hero-line hero-line--second">Make your</span>
+        <span class="hero-line hero-line--third">
+          <span class="inline-block min-w-[5.8ch] whitespace-nowrap text-landing-purple" aria-live="polite">
+            @for (word of [activeWord]; track word) {
+              <span class="inline-block animate-word-enter motion-reduce:animate-none">{{ word }}</span>
+            }
+          </span>
         </span>
       </h1>
-      <p class="mt-6.25 max-w-125 text-[0.95rem] leading-[1.8] text-landing-muted md:text-[1.05rem]">
+      <p class="hero-description mt-6.25 max-w-125 text-[0.95rem] leading-[1.8] text-landing-muted md:text-[1.05rem]">
         Meet the people who bring your ideas to life. DevCollab connects ambitious clients and
         independent talent to make great work happen.
       </p>
       <div class="mt-7.5 flex flex-wrap items-center gap-3.25">
         <a
-          class="inline-flex min-h-12.5 items-center justify-center gap-4.5 rounded-[9px] bg-landing-purple px-5 text-[0.9rem] font-bold text-white no-underline shadow-[0_9px_22px_#6258dc30] transition duration-150 hover:-translate-y-0.5 hover:bg-landing-5147ca hover:text-white hover:shadow-[0_12px_26px_#6258dc42] motion-reduce:transition-none"
+          class="hero-button hero-button--primary inline-flex min-h-12.5 items-center justify-center gap-4.5 rounded-[9px] bg-landing-purple px-5 text-[0.9rem] font-bold text-white no-underline shadow-[0_9px_22px_#6258dc30] transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-landing-5147ca hover:text-white hover:shadow-[0_12px_26px_#6258dc42] active:scale-[0.98] motion-reduce:transition-none"
           routerLink="/register"
         >
           Find your next collaboration
           <span aria-hidden="true">→</span>
         </a>
         <a
-          class="inline-flex min-h-12.5 items-center justify-center gap-4.5 rounded-[9px] border border-landing-e2e3e8 px-5 text-[0.9rem] font-bold text-landing-ink no-underline transition-colors hover:border-landing-c4c5d4 hover:bg-white motion-reduce:transition-none"
+          class="hero-button hero-button--secondary inline-flex min-h-12.5 items-center justify-center gap-4.5 rounded-[9px] border border-landing-e2e3e8 px-5 text-[0.9rem] font-bold text-landing-ink no-underline transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-landing-c4c5d4 hover:bg-white hover:shadow-[0_10px_24px_#22223c12] active:scale-[0.98] motion-reduce:transition-none"
           href="#services"
         >
           Explore what we do
@@ -48,10 +46,11 @@
       </div>
     </div>
 
-    <div class="relative grid min-h-82.5 place-items-center md:min-h-106.25 max-[900px]:md:min-h-87.5">
+    <div class="hero-illustration relative grid min-h-82.5 place-items-center md:min-h-106.25 max-[900px]:md:min-h-87.5">
       <div class="absolute aspect-square w-71.25 rounded-full border border-landing-dfe0e8 md:w-[min(34vw,410px)]"></div>
       <div class="absolute aspect-square w-56.25 rounded-full border border-dashed border-landing-d5d4e4 md:w-[min(27vw,325px)]"></div>
-      <div class="relative z-1 w-[min(300px,76%)] rotate-[-4deg] rounded-[20px] border border-white/65 bg-linear-to-br from-white to-violet-50 px-6.75 pb-5 pt-6.25 shadow-[0_24px_70px_#34345a20] md:w-[min(340px,78%)]">
+      <div class="hero-card-float relative z-1 w-[min(300px,76%)] md:w-[min(340px,78%)]">
+      <div class="w-full rotate-[-4deg] rounded-[20px] border border-white/65 bg-linear-to-br from-white to-violet-50 px-6.75 pb-5 pt-6.25 shadow-[0_24px_70px_#34345a20]">
         <span class="text-[0.61rem] font-extrabold tracking-[0.16em] text-landing-9296aa">PROJECT ROOM</span>
         <div class="my-6.75 mb-7.75 text-[clamp(1.7rem,3.3vw,2.45rem)] font-[750] leading-[1.1] tracking-[-0.07em]">
           A little less<br />solo. A lot more<br /><span class="text-landing-purple">together.</span>
@@ -66,6 +65,7 @@
             <span class="size-1.5 rounded-full bg-landing-65a773"></span> In the works
           </span>
         </div>
+      </div>
       </div>
       <div class="absolute right-0 top-4.5 z-2 flex animate-float items-center gap-2.5 rounded-xl border border-landing-f0f0f2 bg-white px-3.75 py-3 shadow-[0_12px_34px_#22223c16] md:right-[1%] md:top-12 motion-reduce:animate-none">
         <span class="grid size-8 shrink-0 place-items-center rounded-[9px] bg-landing-f0efff text-base font-extrabold text-landing-purple">✳</span>
@@ -89,7 +89,7 @@
   </section>
 
   <section class="bg-white px-[7vw] py-19 md:px-[max(7vw,calc((100vw-1240px)/2))] md:py-27.5 md:pb-30" id="services" aria-labelledby="services-heading">
-    <div class="mx-auto mb-8.75 max-w-152.5 text-center md:mb-13.5">
+    <div [appScrollReveal]="0" class="mx-auto mb-8.75 max-w-152.5 text-center md:mb-13.5">
       <p class="mb-4.25 text-[0.72rem] font-extrabold tracking-[0.17em] text-landing-purple">WHAT WE DO</p>
       <h2 class="m-0 text-[clamp(2.3rem,4.3vw,3.8rem)] font-[750] leading-[1.08] tracking-[-0.07em]" id="services-heading">
         Less searching.<br /><span class="text-landing-purple">More making.</span>
@@ -98,9 +98,9 @@
     </div>
 
     <div class="grid grid-cols-1 gap-3.25 md:grid-cols-3 md:gap-5">
-      <article class="min-h-0 rounded-[14px] border border-landing-eeedf1 bg-landing-f6f4ff p-5.75 transition duration-200 hover:-translate-y-1.25 hover:shadow-[0_18px_40px_#22223c0e] motion-reduce:transition-none md:min-h-77.5 md:p-6.5">
+      <article [appScrollReveal]="0" class="group min-h-0 rounded-[14px] border border-landing-eeedf1 bg-landing-f6f4ff p-5.75 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-landing-d5d4e4 hover:shadow-[0_18px_40px_#22223c0e] motion-reduce:transition-none md:min-h-77.5 md:p-6.5">
         <span class="text-[0.64rem] font-extrabold tracking-[0.13em] text-landing-878b9b">01 / FIND</span>
-        <div class="mt-6.5 grid size-13 place-items-center rounded-[13px] bg-white text-landing-purple">
+        <div class="feature-icon mt-6.5 grid size-13 place-items-center rounded-[13px] bg-white text-landing-purple transition-transform duration-300 group-hover:scale-105">
           <svg class="size-7.75" viewBox="0 0 48 48" fill="none" aria-hidden="true">
             <circle cx="20.5" cy="20.5" r="11.5" stroke="currentColor" stroke-width="2.5" />
             <path d="m29 29 9 9M16 20h9m-4.5-4.5v9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
@@ -108,24 +108,24 @@
         </div>
         <h3 class="mb-2.25 mt-4.5 text-[1.2rem] font-[750] tracking-[-0.035em]">Find your people</h3>
         <p class="m-0 text-[0.83rem] leading-[1.7] text-landing-muted md:min-h-17.5">Discover projects that fit your skills, or find the right independent talent to bring your vision to life.</p>
-        <a class="mt-4.5 inline-flex items-center gap-2.25 text-[0.78rem] font-[750] text-landing-ink no-underline hover:text-landing-purple" routerLink="/register" aria-label="Find your people: create an account">Find your fit <span aria-hidden="true">↗</span></a>
+        <a class="mt-4.5 inline-flex items-center gap-2.25 text-[0.78rem] font-[750] text-landing-ink no-underline transition-colors duration-200 hover:text-landing-purple" routerLink="/register" aria-label="Find your people: create an account">Find your fit <span aria-hidden="true">↗</span></a>
       </article>
 
-      <article class="min-h-0 rounded-[14px] border border-landing-eeedf1 bg-landing-fff6ef p-5.75 transition duration-200 hover:-translate-y-1.25 hover:shadow-[0_18px_40px_#22223c0e] motion-reduce:transition-none md:min-h-77.5 md:p-6.5">
+      <article [appScrollReveal]="90" class="group min-h-0 rounded-[14px] border border-landing-eeedf1 bg-landing-fff6ef p-5.75 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-landing-d5d4e4 hover:shadow-[0_18px_40px_#22223c0e] motion-reduce:transition-none md:min-h-77.5 md:p-6.5">
         <span class="text-[0.64rem] font-extrabold tracking-[0.13em] text-landing-878b9b">02 / CONNECT</span>
-        <div class="mt-6.5 grid size-13 place-items-center rounded-[13px] bg-white text-landing-d47a4e">
+        <div class="feature-icon mt-6.5 grid size-13 place-items-center rounded-[13px] bg-white text-landing-d47a4e transition-transform duration-300 group-hover:scale-105">
           <svg class="size-7.75" viewBox="0 0 48 48" fill="none" aria-hidden="true">
             <path d="M18 30 30 18m-15-3h-2a7 7 0 0 0 0 14h5m15-14h2a7 7 0 0 1 0 14h-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </div>
         <h3 class="mb-2.25 mt-4.5 text-[1.2rem] font-[750] tracking-[-0.035em]">Make the connection</h3>
         <p class="m-0 text-[0.83rem] leading-[1.7] text-landing-muted md:min-h-17.5">Share your goals, send a proposal, and start a conversation with people who get what you’re building.</p>
-        <a class="mt-4.5 inline-flex items-center gap-2.25 text-[0.78rem] font-[750] text-landing-ink no-underline hover:text-landing-purple" routerLink="/register" aria-label="Make the connection: create an account">Start a conversation <span aria-hidden="true">↗</span></a>
+        <a class="mt-4.5 inline-flex items-center gap-2.25 text-[0.78rem] font-[750] text-landing-ink no-underline transition-colors duration-200 hover:text-landing-purple" routerLink="/register" aria-label="Make the connection: create an account">Start a conversation <span aria-hidden="true">↗</span></a>
       </article>
 
-      <article class="min-h-0 rounded-[14px] border border-landing-eeedf1 bg-landing-f0f8f4 p-5.75 transition duration-200 hover:-translate-y-1.25 hover:shadow-[0_18px_40px_#22223c0e] motion-reduce:transition-none md:min-h-77.5 md:p-6.5">
+      <article [appScrollReveal]="180" class="group min-h-0 rounded-[14px] border border-landing-eeedf1 bg-landing-f0f8f4 p-5.75 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-landing-d5d4e4 hover:shadow-[0_18px_40px_#22223c0e] motion-reduce:transition-none md:min-h-77.5 md:p-6.5">
         <span class="text-[0.64rem] font-extrabold tracking-[0.13em] text-landing-878b9b">03 / CREATE</span>
-        <div class="mt-6.5 grid size-13 place-items-center rounded-[13px] bg-white text-landing-54876d">
+        <div class="feature-icon mt-6.5 grid size-13 place-items-center rounded-[13px] bg-white text-landing-54876d transition-transform duration-300 group-hover:scale-105">
           <svg class="size-7.75" viewBox="0 0 48 48" fill="none" aria-hidden="true">
             <path d="M24 6v7m0 22v7m18-18h-7M13 24H6m30.7-12.7-5 5m-15.4 15.4-5 5m25.4 0-5-5m-15.4-15.4-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
             <circle cx="24" cy="24" r="8" stroke="currentColor" stroke-width="2.5" />
@@ -133,13 +133,13 @@
         </div>
         <h3 class="mb-2.25 mt-4.5 text-[1.2rem] font-[750] tracking-[-0.035em]">Make great things</h3>
         <p class="m-0 text-[0.83rem] leading-[1.7] text-landing-muted md:min-h-17.5">Keep your projects, proposals, and progress in one place so your team can focus on the work.</p>
-        <a class="mt-4.5 inline-flex items-center gap-2.25 text-[0.78rem] font-[750] text-landing-ink no-underline hover:text-landing-purple" routerLink="/register" aria-label="Make great things: create an account">Get started <span aria-hidden="true">↗</span></a>
+        <a class="mt-4.5 inline-flex items-center gap-2.25 text-[0.78rem] font-[750] text-landing-ink no-underline transition-colors duration-200 hover:text-landing-purple" routerLink="/register" aria-label="Make great things: create an account">Get started <span aria-hidden="true">↗</span></a>
       </article>
     </div>
   </section>
 
   <section class="grid grid-cols-1 items-center gap-8.75 bg-landing-paper px-[7vw] py-19 md:grid-cols-[minmax(230px,0.78fr)_minmax(0,1.22fr)] md:gap-[9vw] md:px-[max(7vw,calc((100vw-1240px)/2))] md:py-26.25 max-[900px]:md:grid-cols-1" id="reviews" aria-labelledby="reviews-heading">
-    <div>
+    <div [appScrollReveal]="0">
       <p class="mb-4.25 text-[0.72rem] font-extrabold tracking-[0.17em] text-landing-purple">GOOD COMPANY</p>
       <h2 class="m-0 text-[clamp(2.3rem,4.3vw,3.8rem)] font-[750] leading-[1.08] tracking-[-0.07em]" id="reviews-heading">
         Don’t just take<br />our <span class="text-landing-purple">word for it.</span>
@@ -150,7 +150,7 @@
       </div>
     </div>
     <div class="grid grid-cols-1 items-start gap-3.75 sm:grid-cols-2">
-      <article class="min-h-0 rounded-[13px] border border-landing-eeedf1 bg-white p-5.5 shadow-[0_10px_30px_#22223c08] md:min-h-60">
+      <article [appScrollReveal]="0" class="min-h-0 rounded-[13px] border border-landing-eeedf1 bg-white p-5.5 shadow-[0_10px_30px_#22223c08] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_#22223c12] motion-reduce:transition-none md:min-h-60">
         <div class="text-[0.9rem] tracking-[0.12em] text-landing-e5a44b" aria-label="5 out of 5 stars">★★★★★</div>
         <blockquote class="my-4.5 text-[0.88rem] font-[550] leading-[1.7] text-landing-424c61">“I found a project that felt like a perfect fit, and a client who valued the way I work.”</blockquote>
         <div class="flex items-center gap-2.5 border-t border-landing-f0eff2 pt-3.5">
@@ -158,7 +158,7 @@
           <span><strong class="block text-[0.71rem]">Sample review</strong><small class="mt-0.75 block text-[0.65rem] text-landing-muted">Independent designer</small></span>
         </div>
       </article>
-      <article class="min-h-0 rounded-[13px] border border-landing-eeedf1 bg-white p-5.5 shadow-[0_10px_30px_#22223c08] md:mt-7.5 md:min-h-60">
+      <article [appScrollReveal]="100" class="min-h-0 rounded-[13px] border border-landing-eeedf1 bg-white p-5.5 shadow-[0_10px_30px_#22223c08] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_#22223c12] motion-reduce:transition-none md:mt-7.5 md:min-h-60">
         <div class="text-[0.9rem] tracking-[0.12em] text-landing-e5a44b" aria-label="5 out of 5 stars">★★★★★</div>
         <blockquote class="my-4.5 text-[0.88rem] font-[550] leading-[1.7] text-landing-424c61">“Finding talented people who understood the idea made all the difference to our project.”</blockquote>
         <div class="flex items-center gap-2.5 border-t border-landing-f0eff2 pt-3.5">
@@ -171,31 +171,32 @@
   </section>
 
   <section class="flex flex-col items-start justify-between gap-6.25 bg-landing-eeedff px-[7vw] py-15 md:flex-row md:items-center md:px-[max(7vw,calc((100vw-1240px)/2))] md:py-18.75">
-    <div>
+    <div [appScrollReveal]="0">
       <p class="mb-4.25 text-[0.72rem] font-extrabold tracking-[0.17em] text-landing-purple">YOUR NEXT CHAPTER STARTS HERE</p>
       <h2 class="m-0 text-[clamp(2rem,3.5vw,3rem)] font-[750] leading-[1.08] tracking-[-0.07em]">
-        Good things happen<br />when we <span class="text-landing-purple">work together.</span>
+        Good things happen<br />when we <span class="cta-highlight text-landing-purple">work together.</span>
       </h2>
     </div>
     <a
-      class="inline-flex min-h-12.5 shrink-0 items-center justify-center gap-4.5 rounded-[9px] bg-landing-purple px-5 text-[0.9rem] font-bold text-white no-underline shadow-[0_9px_22px_#6258dc30] transition duration-150 hover:-translate-y-0.5 hover:bg-landing-5147ca hover:text-white hover:shadow-[0_12px_26px_#6258dc42] motion-reduce:transition-none"
+      [appScrollReveal]="0"
+      class="inline-flex min-h-12.5 shrink-0 items-center justify-center gap-4.5 rounded-[9px] bg-landing-purple px-5 text-[0.9rem] font-bold text-white no-underline shadow-[0_9px_22px_#6258dc30] transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-landing-5147ca hover:text-white hover:shadow-[0_12px_26px_#6258dc42] active:scale-[0.98] motion-reduce:transition-none"
       routerLink="/register"
     >
       Join DevCollab <span aria-hidden="true">→</span>
     </a>
   </section>
 
-  <footer class="grid grid-cols-[1fr_auto] items-center gap-x-7 gap-y-2 bg-landing-17213a px-[7vw] py-6.75 text-landing-d4d8e2 md:grid-cols-[auto_1fr_auto] md:px-[max(7vw,calc((100vw-1240px)/2))] md:py-7.25">
-    <a class="inline-flex" routerLink="/" aria-label="DevCollab home">
+  <footer [appScrollReveal]="0" class="grid grid-cols-[1fr_auto] items-center gap-x-7 gap-y-2 bg-landing-17213a px-[7vw] py-6.75 text-landing-d4d8e2 md:grid-cols-[auto_1fr_auto] md:px-[max(7vw,calc((100vw-1240px)/2))] md:py-7.25">
+    <a class="inline-flex transition-opacity duration-300 hover:opacity-80" routerLink="/" aria-label="DevCollab home">
       <img class="block max-h-9 w-33.75 object-contain object-left" src="/image.png" alt="DevCollab" />
     </a>
     <span class="col-start-2 row-start-1 whitespace-nowrap text-[0.68rem] text-landing-8992a6 md:col-start-3 md:row-span-2">© {{ currentYear }} DevCollab</span>
     <p class="col-span-2 m-0 text-[0.75rem] text-landing-aeb5c5 md:col-span-1 md:col-start-2">Bringing good people and good ideas together.</p>
     <nav class="col-span-2 flex flex-wrap gap-3.5 md:col-span-1 md:col-start-2 md:gap-4.5" aria-label="Footer navigation">
-      <a class="text-[0.74rem] text-landing-d4d8e2 no-underline hover:text-white" href="#services">Services</a>
-      <a class="text-[0.74rem] text-landing-d4d8e2 no-underline hover:text-white" href="#reviews">Reviews</a>
-      <a class="text-[0.74rem] text-landing-d4d8e2 no-underline hover:text-white" routerLink="/login">Log in</a>
-      <a class="text-[0.74rem] text-landing-d4d8e2 no-underline hover:text-white" routerLink="/register">Create account</a>
+      <a class="text-[0.74rem] text-landing-d4d8e2 no-underline transition-colors duration-200 hover:text-white" href="#services">Services</a>
+      <a class="text-[0.74rem] text-landing-d4d8e2 no-underline transition-colors duration-200 hover:text-white" href="#reviews">Reviews</a>
+      <a class="text-[0.74rem] text-landing-d4d8e2 no-underline transition-colors duration-200 hover:text-white" routerLink="/login">Log in</a>
+      <a class="text-[0.74rem] text-landing-d4d8e2 no-underline transition-colors duration-200 hover:text-white" routerLink="/register">Create account</a>
     </nav>
   </footer>
 </div>
