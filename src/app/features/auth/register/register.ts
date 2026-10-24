@@ -42,7 +42,7 @@ export class RegisterComponent {
     this.authService
       .register({
         name: this.name.trim(),
-        email: this.email.trim().toLowerCase(),
+        email: this.email.trim(),
         password: this.password,
         role: this.role,
       })

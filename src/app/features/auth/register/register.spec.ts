@@ -42,7 +42,7 @@ describe('RegisterComponent', () => {
     );
   });
 
-  it('normalizes the name and email and displays the successful response', () => {
+  it('trims the name and email without changing email casing', () => {
     registerRequest.mockReturnValue(
       of({ message: 'Registration successful.', user: {} }),
     );
@@ -56,7 +56,7 @@ describe('RegisterComponent', () => {
 
     expect(registerRequest).toHaveBeenCalledWith({
       name: 'DevCollab User',
-      email: 'user@example.com',
+      email: 'USER@example.com',
       password: 'valid-password',
       role: 'client',
     });
